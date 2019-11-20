@@ -69,6 +69,41 @@ class TensorDataSet(WrappedDataSet):
         return scaledfloat.reshape(1, 28, 28), int(label)
 
 
+def train(model, dl, optimiser, n_epochs):
+    total_loss = 0
+    model.train()
+    for n, (data, label) in enumerate(dl):
+        optimiser.zero_grad()
+        Y_pred = model(data)
+
+        loss = F.nll_loss(Y_pred, label)
+        loss.backward()
+        total_loss += loss.item()
+
+        optimiser.step()
+
+        if n % 10 == 0:
+            print(f"Batch {n}/{len(dl)}, running loss {total_loss}")
+
+    print("Epoch training loss", total_loss)
+
+
+def test(model, dl, tds):
+
+        model.eval()
+        test_loss = 0
+        correct = 0
+        with torch.no_grad():
+            for data, label in dl:
+                Y_pred = model(data)
+                test_loss += F.nll_loss(Y_pred, label).item()
+                pred = Y_pred.argmax(dim=1, keepdim=True)
+                correct += pred.eq(label.view_as(pred)).sum().item()
+
+        print("Test loss:", test_loss)
+        print(f"{correct}/{len(tds)} correct")
+
+
 @click.command()
 @click.argument('dataset_uri')
 def main(dataset_uri):
@@ -84,52 +119,13 @@ def main(dataset_uri):
 
     optimiser = optim.SGD(model.parameters(), lr=0.01)
 
-    model.eval()
-    test_loss = 0
-    correct = 0
-    with torch.no_grad():
-        for data, label in test_dl:
-            Y_pred = model(data)
-            test_loss += F.nll_loss(Y_pred, label).item()
-            pred = Y_pred.argmax(dim=1, keepdim=True)
-            correct += pred.eq(label.view_as(pred)).sum().item()
-
-    print("Test loss:", test_loss)
-    print(f"{correct}/{len(test_tds)} correct")
+    test(model, test_dl, test_tds)
 
     for epoch in range(2):
-        total_loss = 0
-        model.train()
-        for n, (data, label) in enumerate(dl):
+        train(model, dl, optimiser, 2)
+        test(model, test_dl, test_tds)
 
-            # print(data.shape, label.shape)
 
-            optimiser.zero_grad()
-            Y_pred = model(data)
-
-            loss = F.nll_loss(Y_pred, label)
-            loss.backward()
-            total_loss += loss.item()
-
-            optimiser.step()
-
-            if n % 10 == 0:
-                print(n, total_loss)
-
-        print("Total loss", total_loss)
-
-        model.eval()
-        test_loss = 0
-        correct = 0
-        with torch.no_grad():
-            for data, label in test_dl:
-                Y_pred = model(data)
-                test_loss += F.nll_loss(Y_pred, label).item()
-                pred = Y_pred.argmax(dim=1, keepdim=True)
-                correct += pred.eq(label.view_as(pred)).sum().item()
-
-        print("Test loss:", test_loss)
-        print(f"{correct}/{len(test_tds)} correct")
 
 
 
