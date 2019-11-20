@@ -11,62 +11,11 @@ import torch.nn.functional as F
 
 import numpy as np
 
-from cnn import Net
+from cnn import Net, BigSeedCNN, GenNet
 
-from sklearn.model_selection import train_test_split
+from data import TensorDataSet
 
-
-class WrappedDataSet(torch.utils.data.Dataset):
-
-    def __init__(self, uri):
-        self.dataset = dtoolcore.DataSet.from_uri(uri)
-
-    @property
-    def name(self):
-        return self.dataset.name
-
-    @property
-    def uri(self):
-        return self.dataset.uri
-
-    @property
-    def uuid(self):
-        return self.dataset.uuid
-
-
-# TODO - FIX THE OBJECT TYPE 
-class TensorDataSet(WrappedDataSet):
-
-    def __init__(self, uri, test=False):
-        super().__init__(uri)
-
-        idn = dtoolcore.utils.generate_identifier("mnist.npy")
-        npy_fpath = self.dataset.item_content_abspath(idn)
-        self.X = np.load(npy_fpath, mmap_mode=None)
-
-        labels_idn = dtoolcore.utils.generate_identifier("labels.npy")
-        labels_fpath = self.dataset.item_content_abspath(labels_idn)
-        self.y = np.load(labels_fpath, mmap_mode=None)
-
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, random_state=0)
-
-        if test:
-            self.tensor = self.X_test
-            self.labels = self.y_test
-        else:
-            self.tensor = self.X_train
-            self.labels = self.y_train
-
-    def __len__(self):
-        return self.tensor.shape[0]
-
-    def __getitem__(self, index):
-        raw = self.tensor[index]
-        scaledfloat = raw.astype(np.float32) / 255
-
-        label = self.labels[index]
-
-        return scaledfloat.reshape(1, 28, 28), int(label)
+from dtool_utils.derived_dataset import DerivedDataSet
 
 
 def train(model, dl, optimiser, n_epochs):
@@ -76,6 +25,7 @@ def train(model, dl, optimiser, n_epochs):
         optimiser.zero_grad()
         Y_pred = model(data)
 
+        # print(data.shape, Y_pred.shape, label.shape)
         loss = F.nll_loss(Y_pred, label)
         loss.backward()
         total_loss += loss.item()
@@ -115,17 +65,22 @@ def main(dataset_uri):
     test_dl = DataLoader(test_tds, batch_size=64, shuffle=True)
 
 
-    model = Net()
+    model = GenNet(tds.input_channels, tds.dim)
 
     optimiser = optim.SGD(model.parameters(), lr=0.01)
 
     test(model, test_dl, test_tds)
 
-    for epoch in range(2):
-        train(model, dl, optimiser, 2)
-        test(model, test_dl, test_tds)
+    output_base_uri = "scratch"
+    output_name = "conv2dmnist"
+    with DerivedDataSet(output_base_uri, output_name, tds, overwrite=True) as output_ds:
+    # TODO - move train/val and epochs into the training loop
+        for epoch in range(50):
+            train(model, dl, optimiser, 2)
+            test(model, test_dl, test_tds)
 
-    torch.save(model.state_dict(), 'model.pt')
+        model_output_fpath = output_ds.staging_fpath("model.pt")
+        torch.save(model.state_dict(), model_output_fpath)
 
 
 
