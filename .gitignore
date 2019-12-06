@@ -1,3 +1,7 @@
+venv
 __pycache__
 scratch
 local-data
+*.ipynb
+*.egg-info/
+*.png
