@@ -78,7 +78,7 @@ def main(model_uri, test_data_uri):
     cnnmodel = TorchModel.from_uri(model_uri, Net)
 
     tds = TensorDataSet(test_data_uri)
-    dl = DataLoader(tds, batch_size=64, shuffle=True)xw
+    dl = DataLoader(tds, batch_size=64, shuffle=True)
 
     data, labels = next(iter(dl))
 

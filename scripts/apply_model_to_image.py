@@ -2,41 +2,65 @@ import click
 import torch
 import dtoolcore
 
+import numpy as np
+
 from PIL import Image
 
+import torch.nn as nn
+import torchvision.models
 from torchvision.transforms.functional import to_tensor
 
-from dtoolai.models import GenNet
+from dtoolai.models import GenNet, ResNet18Retrain
+from dtoolai.data import coerce_to_fixed_size_rgb
+
+from imageio import imsave
+
+from dtoolai.trained import TrainedTorchModel
+
+
+def image_fpath_to_model_input(image_fpath):
+    im = Image.open(image_fpath)
+    # print(f"Original shape: {im.size}, mode: {im.mode}")
+    resized_converted = coerce_to_fixed_size_rgb(im, (256, 256))
+    as_tensor = to_tensor(resized_converted)
+    # Add leading extra dimension for batch size
+    return as_tensor[None]
+
+def diagnose_input(model_input):
+    model_input_np = model_input.squeeze().cpu().numpy()
+    model_input_t = np.transpose(model_input_np, (1, 2, 0))
+    imsave('model_input_t.png', model_input_t)
 
 
 @click.command()
+@click.argument('model_uri')
 @click.argument('image_fpath')
-def main(image_fpath):
+def main(model_uri, image_fpath):
+
+    net = TrainedTorchModel(model_uri)
+    model_input = image_fpath_to_model_input(image_fpath)
+    result = net.predict(model_input)
+    print(result)
+    # model = ResNet18Retrain(2)
 
 
-    model = GenNet(1, 28)
-    model_uri = 'scratch/models/conv2dmnist'
+    # ds = dtoolcore.DataSet.from_uri(model_uri)
+    # cat_encoding = ds.get_annotation("category_encoding")
+    # cat_decoding = {n: cat for cat, n in cat_encoding.items()}
+    # # model_params = ds.
+    # idn = dtoolcore.utils.generate_identifier('model.pt')
+    # state_abspath = ds.item_content_abspath(idn)
+    # model.load_state_dict(torch.load(state_abspath, map_location='cpu'))
+    # model.eval()
 
-    ds = dtoolcore.DataSet.from_uri(model_uri)
-    idn = dtoolcore.utils.generate_identifier('model.pt')
-    state_abspath = ds.item_content_abspath(idn)
+    # model_input = image_fpath_to_model_input(image_fpath)
+    # with torch.no_grad():
+    #     output = model(model_input)
 
-    model.load_state_dict(torch.load(state_abspath, map_location='cpu'))
+    # cat_n = output.squeeze().numpy().argmax()
+    # print(f"Classified as: {cat_decoding[cat_n]}")
 
-    im = Image.open(image_fpath)
-    im_resized = im.resize((28, 28))
-    im_converted = im_resized.convert('L')
 
-    im_converted.save('i.png')
-
-    single_input = to_tensor(im_converted)
-    model_input = single_input[None]
-
-    with torch.no_grad():
-        output = model(model_input)
-
-    print(output.squeeze().numpy())
-    print(output.squeeze().numpy().argmax())
 
 
 if __name__ == "__main__":

@@ -11,9 +11,8 @@ import torch.nn.functional as F
 
 import numpy as np
 
-from cnn import Net, BigSeedCNN, GenNet
-
-from data import TensorDataSet
+from dtoolai.models import GenNet
+from dtoolai.data import TensorDataSet
 
 from dtool_utils.derived_dataset import DerivedDataSet
 
@@ -64,18 +63,17 @@ def main(dataset_uri):
     dl = DataLoader(tds, batch_size=64, shuffle=True)
     test_dl = DataLoader(test_tds, batch_size=64, shuffle=True)
 
-
     model = GenNet(tds.input_channels, tds.dim)
 
     optimiser = optim.SGD(model.parameters(), lr=0.01)
 
     test(model, test_dl, test_tds)
 
-    output_base_uri = "scratch"
+    output_base_uri = "scratch/models"
     output_name = "conv2dmnist"
     with DerivedDataSet(output_base_uri, output_name, tds, overwrite=True) as output_ds:
     # TODO - move train/val and epochs into the training loop
-        for epoch in range(50):
+        for epoch in range(1):
             train(model, dl, optimiser, 2)
             test(model, test_dl, test_tds)
 

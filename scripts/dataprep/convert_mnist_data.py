@@ -8,7 +8,8 @@ import numpy as np
 
 from sklearn.datasets import fetch_mldata
 
-from dtool_utils.quick_dataset import QuickDataSet
+
+from dtoolai.data import create_tensor_dataset_from_arrays
 
 
 README_TEMPLATE = """---
@@ -19,6 +20,7 @@ authors:
   - Corinna Cortes
   - Christopher J.C. Burges
 origin: http://yann.lecun.com/exdb/mnist/
+usetype: {usetype}
 """
 
 
@@ -28,30 +30,41 @@ def get_mnist_from_sklearn():
     return mnist
 
 
-def create_dataset_from_mnist_data(mnist, output_base_uri, output_name):
 
-    with QuickDataSet(output_base_uri, output_name) as qds:
-        numpy_fpath = qds.staging_fpath('mnist.npy')
-        np.save(numpy_fpath, mnist.data)
-        labels_fpath = qds.staging_fpath('labels.npy')
-        np.save(labels_fpath, mnist.target)
+def create_dataset_from_mnist_data(mnist, output_base_uri, output_prefix):
 
-    tensor_idn = dtoolcore.utils.generate_identifier('mnist.npy')
-    qds.put_annotation("tensor_file_idn", tensor_idn)
+    output_name_train = output_prefix + '.train'
+    output_name_test = output_prefix + '.test'
 
     image_dim = [1, 28, 28]
-    qds.put_annotation("image_dimensions", image_dim)
+    n_train = 60000
+    
+    create_tensor_dataset_from_arrays(
+        output_base_uri,
+        output_name_train,
+        mnist.data[:n_train],
+        mnist.target[:n_train],
+        image_dim,
+        README_TEMPLATE.format(usetype='train')
+    )
 
-    qds.put_readme(README_TEMPLATE)
+    create_tensor_dataset_from_arrays(
+        output_base_uri,
+        output_name_test,
+        mnist.data[n_train:],
+        mnist.target[n_train:],
+        image_dim,
+        README_TEMPLATE.format(usetype='test')
+    )
 
 
 @click.command()
 @click.argument('output_base_uri')
-@click.argument('output_name')
-def main(output_base_uri, output_name):
+@click.argument('output_prefix')
+def main(output_base_uri, output_prefix):
     
     mnist = get_mnist_from_sklearn()
-    create_dataset_from_mnist_data(mnist, output_base_uri, output_name)
+    create_dataset_from_mnist_data(mnist, output_base_uri, output_prefix)
 
 
 if __name__ == "__main__":
