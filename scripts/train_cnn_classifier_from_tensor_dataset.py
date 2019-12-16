@@ -17,6 +17,8 @@ def train_cnn_from_tensor_dataset(tds_train, output_base_uri, output_name, param
 
     dl_train = DataLoader(tds_train, batch_size=params.batch_size, shuffle=True)
 
+    params['input_dim'] = tds_train.dim
+    params['input_channels'] = tds_train.input_channels
     params['init_params'] = dict(input_channels=tds_train.input_channels, input_dim=tds_train.dim)
     model = GenNet(**params['init_params'])
     loss_fn = F.nll_loss

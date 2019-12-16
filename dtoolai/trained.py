@@ -45,6 +45,7 @@ class TrainedTorchModel(WrappedDataSet):
 
         model_params = self.dataset.get_annotation("model_parameters")
         self.model = model_cls(**model_params['init_params'])
+        self.model_params = model_params
 
         cat_encoding = self.dataset.get_annotation("category_encoding")
         self.cat_decoding = {n: cat for cat, n in cat_encoding.items()}

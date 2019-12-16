@@ -18,10 +18,36 @@ from imageio import imsave
 from dtoolai.trained import TrainedTorchModel
 
 
-def image_fpath_to_model_input(image_fpath):
+def coerce_to_target_dim(im, input_format):
+    """Convert a PIL image to a fixed size and number of channels."""
+
+    mode_map = {
+        1: 'L',
+        3: 'RGB'
+    }
+
+    if im.mode not in mode_map.values():
+        raise Exception(f"Unknown image mode: {im.mode}")
+
+    ch, tdimw, tdimh = input_format
+    if ch not in mode_map:
+        raise Exception(f"Unsupported input format: {input_format}")
+
+    cdimw, cdimh = im.size
+    if (cdimw, cdimh) != (tdimw, tdimh):
+        im = im.resize((tdimw, tdimh))
+
+    if mode_map[ch] != im.mode:
+        im = im.convert(mode_map[ch])
+
+    return im
+
+
+def image_fpath_to_model_input(image_fpath, input_format):
     im = Image.open(image_fpath)
     # print(f"Original shape: {im.size}, mode: {im.mode}")
-    resized_converted = coerce_to_fixed_size_rgb(im, (256, 256))
+    # resized_converted = coerce_to_fixed_size_rgb(im, (256, 256))
+    resized_converted = coerce_to_target_dim(im, input_format)
     as_tensor = to_tensor(resized_converted)
     # Add leading extra dimension for batch size
     return as_tensor[None]
@@ -38,27 +64,14 @@ def diagnose_input(model_input):
 def main(model_uri, image_fpath):
 
     net = TrainedTorchModel(model_uri)
-    model_input = image_fpath_to_model_input(image_fpath)
+
+    dim = net.model_params['input_dim']
+    channels = net.model_params['input_channels']
+    input_format = [channels, dim, dim]
+    model_input = image_fpath_to_model_input(image_fpath, input_format)
     result = net.predict(model_input)
     print(result)
-    # model = ResNet18Retrain(2)
 
-
-    # ds = dtoolcore.DataSet.from_uri(model_uri)
-    # cat_encoding = ds.get_annotation("category_encoding")
-    # cat_decoding = {n: cat for cat, n in cat_encoding.items()}
-    # # model_params = ds.
-    # idn = dtoolcore.utils.generate_identifier('model.pt')
-    # state_abspath = ds.item_content_abspath(idn)
-    # model.load_state_dict(torch.load(state_abspath, map_location='cpu'))
-    # model.eval()
-
-    # model_input = image_fpath_to_model_input(image_fpath)
-    # with torch.no_grad():
-    #     output = model(model_input)
-
-    # cat_n = output.squeeze().numpy().argmax()
-    # print(f"Classified as: {cat_decoding[cat_n]}")
 
 
 
