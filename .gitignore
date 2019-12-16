@@ -5,3 +5,5 @@ local-data
 *.ipynb
 *.egg-info/
 *.png
+
+*.jpg
