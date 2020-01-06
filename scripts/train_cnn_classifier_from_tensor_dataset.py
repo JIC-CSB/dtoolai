@@ -24,6 +24,9 @@ def train_cnn_from_tensor_dataset(tds_train, output_base_uri, output_name, param
     loss_fn = F.nll_loss
     optimiser = optim.SGD(model.parameters(), lr=params.learning_rate)
 
+    # FIXME
+    params['optimiser_name'] = optimiser.__class__.__name__
+
     # FIXME - probably should be in tensor dataset
     cat_encoding = {n: n for n in range(10)}
 
@@ -38,6 +41,7 @@ def train_cnn_from_tensor_dataset(tds_train, output_base_uri, output_name, param
         output_ds.put_annotation("model_parameters", params.parameter_dict)
         output_ds.put_annotation("model_name", f"dtoolai.{model.model_name}")
 
+    print(f"Wrote trained model ({model.model_name}) weights to {output_ds.uri}")
 
 @click.command()
 @click.argument('train_dataset_uri')
