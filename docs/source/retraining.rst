@@ -27,4 +27,8 @@ Now we can run the retraining process
 Applying the retrained model to new images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Now we can test the newly trained model. 
+Now we can test the newly trained model.
+
+.. code-block:: bash
+
+    python scripts/apply_model_to_image.py scratch/models/conv2dcaltechu2/ joshua1.jpg
