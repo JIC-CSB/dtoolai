@@ -11,7 +11,6 @@ import torchvision.models
 from torchvision.transforms.functional import to_tensor
 
 from dtoolai.models import GenNet, ResNet18Retrain
-from dtoolai.data import coerce_to_fixed_size_rgb
 
 from imageio import imsave
 
@@ -23,7 +22,8 @@ def coerce_to_target_dim(im, input_format):
 
     mode_map = {
         1: 'L',
-        3: 'RGB'
+        3: 'RGB',
+        4: 'RGBA'
     }
 
     if im.mode not in mode_map.values():
@@ -46,11 +46,11 @@ def coerce_to_target_dim(im, input_format):
 def image_fpath_to_model_input(image_fpath, input_format):
     im = Image.open(image_fpath)
     # print(f"Original shape: {im.size}, mode: {im.mode}")
-    # resized_converted = coerce_to_fixed_size_rgb(im, (256, 256))
     resized_converted = coerce_to_target_dim(im, input_format)
     as_tensor = to_tensor(resized_converted)
     # Add leading extra dimension for batch size
     return as_tensor[None]
+
 
 def diagnose_input(model_input):
     model_input_np = model_input.squeeze().cpu().numpy()
@@ -70,7 +70,8 @@ def main(model_uri, image_fpath):
     input_format = [channels, dim, dim]
     model_input = image_fpath_to_model_input(image_fpath, input_format)
     result = net.predict(model_input)
-    print(result)
+
+    print(f"Classified {image_fpath} as {result}")
 
 
 
