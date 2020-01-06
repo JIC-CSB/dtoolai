@@ -46,6 +46,9 @@ def main(input_dataset_uri, output_base_uri, output_name, params):
     dl_test = DataLoader(ids_test, batch_size=model_params.batch_size, shuffle=True)
     evaluate_model(model, dl_test)
 
+    model_params['input_dim'] = ids.dim
+    model_params['input_channels'] = ids.input_channels
+
     criterion = nn.CrossEntropyLoss()
     optimiser_ft = optim.SGD(model.parameters(), lr=model_params.learning_rate, momentum=0.9)
     with DerivedDataSet(output_base_uri, output_name, ids, overwrite=True) as output_ds:
