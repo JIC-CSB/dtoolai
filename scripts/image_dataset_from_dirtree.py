@@ -33,6 +33,7 @@ def main(dirpath, output_base_uri, output_name):
             handle = output_ds.put_item(srcpath, relpath)
             output_ds.add_item_metadata(handle, 'category', cat)
         output_ds.put_annotation('category_encoding', category_encoding)
+        output_ds.put_annotation("dtoolAI.inputtype", "ImageDataSet")
 
 
 if __name__ == "__main__":
