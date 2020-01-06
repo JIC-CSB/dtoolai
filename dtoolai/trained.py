@@ -42,6 +42,7 @@ class TrainedTorchModel(WrappedDataSet):
             _, name_lookup_key = model_name.split('.')
             # print(f"Lookup {name_lookup_key}")
             model_cls = MODEL_NAME_LOOKUP[name_lookup_key]
+        self.model_name = model_name
 
         model_params = self.dataset.get_annotation("model_parameters")
         self.model = model_cls(**model_params['init_params'])
