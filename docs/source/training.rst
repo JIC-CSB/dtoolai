@@ -25,13 +25,14 @@ dtool CLI to see what we know about this DataSet:
     origin: http://yann.lecun.com/exdb/mnist/
     usetype: train
 
-This tells us some information about what the data are, who created it, and
+This tells us some information about what the data are, who created them, and
 where we can go to find out more.
 
 Training a network
 ~~~~~~~~~~~~~~~~~~
 
-Given that
+We'll start by using one of the helper scripts from dtoolAI to train a CNN.
+Later, we'll look at what the script is doing.
 
 .. code-block:: bash
 
@@ -44,10 +45,27 @@ the trained model weights have been written, e.g.:
 
     Wrote trained model (simpleScalingCNN) weights to file://N108176/Users/hartleym/projects/ai/dtoolai-p/scratch/wipeme
 
-Applying the trained model to new data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Applying the trained model to test data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The simplest way to test our model is on another preprepared dataset - the 
+
+We have test data available
 
 Viewing the trained model metadata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's look at how 
+
+.. code-block:: bash
+
+    dtoolai provenance
+
+
+What the code is doing
+----------------------
+
+Let's dig into what the library code is doing. We'll work through the MNIST
+example
+
 
