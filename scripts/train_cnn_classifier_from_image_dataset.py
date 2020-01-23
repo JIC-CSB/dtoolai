@@ -24,6 +24,8 @@ def train_cnn_from_tensor_dataset(ids, output_base_uri, output_name, params):
     loss_fn = F.nll_loss
     optimiser = optim.SGD(model.parameters(), lr=params.learning_rate)
 
+
+
     with DerivedDataSet(output_base_uri, output_name, ids, overwrite=True) as output_ds:
         train(model, dl, optimiser, loss_fn, params.n_epochs)
         output_ds.readme_dict['parameters'] = params.parameter_dict

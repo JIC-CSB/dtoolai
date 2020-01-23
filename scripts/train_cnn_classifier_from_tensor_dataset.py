@@ -43,6 +43,7 @@ def train_cnn_from_tensor_dataset(tds_train, output_base_uri, output_name, param
 
     print(f"Wrote trained model ({model.model_name}) weights to {output_ds.uri}")
 
+
 @click.command()
 @click.argument('train_dataset_uri')
 @click.argument('output_base_uri')
