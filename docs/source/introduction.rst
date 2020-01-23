@@ -15,8 +15,15 @@ the API and core functions
 High level (helper scripts)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The high level scripts can get you started with some standard deep learning
+tasks (training or retraining convolutional networks on image data) very fast.
+
+
+
 Medium (API functions)
 ~~~~~~~~~~~~~~~~~~~~~~
+
+The API
 
 Low level (core library functions)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
