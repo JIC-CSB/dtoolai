@@ -95,10 +95,11 @@ class ImageDataSet(WrappedDataSet):
         return self.image_dim[0]
 
 
-# TODO - FIX THE OBJECT TYPE
 class TensorDataSet(WrappedDataSet):
+    """Class that allows numpy arrays to be accessed as both a pytorch
+    Dataset and a dtool DataSet."""
 
-    def __init__(self, uri, test=False):
+    def __init__(self, uri):
         super().__init__(uri)
 
         tensor_file_idn = self.dataset.get_annotation("tensor_file_idn")
@@ -127,16 +128,36 @@ class TensorDataSet(WrappedDataSet):
 
     @property
     def input_channels(self):
+        """The number of channels each tensor provides."""
         return self.image_dim[0]
 
     @property
     def dim(self):
+        """The linear dimensions of the tensor, e.g. it is dim x dim in shape.
+        """
         return self.image_dim[1]
 
 
 def create_tensor_dataset_from_arrays(
     output_base_uri, output_name, data_array, label_array, image_dim, readme_content
 ):
+    """Create a dtool DataSet with the necessary annotations to be used as a
+    TensorDataSet.
+
+    Args:
+        output_base_uri: The base URI where the dataset will be created.
+        output_name: The name for the output dataset.
+        data_array (ndarray): The numpy array holding data.
+        label_array (ndarray): The numpy array holding labels.
+        image_dim (tuple): Dimensions to which input images should be reshaped.
+        readme_content (string): Content that will be used to create README.yml
+            in the created dataset.
+
+    Returns:
+        None
+    
+    """
+
     with QuickDataSet(output_base_uri, output_name) as qds:
         data_fpath = qds.staging_fpath('data.npy')
         np.save(data_fpath, data_array)
