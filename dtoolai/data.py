@@ -5,8 +5,6 @@ import dtoolcore
 
 import numpy as np
 
-from sklearn.model_selection import train_test_split
-
 from PIL import Image
 
 from dtool_utils.quick_dataset import QuickDataSet
@@ -79,7 +77,6 @@ class ImageDataSet(WrappedDataSet):
         if idn not in self.loaded_images:
             logging.debug(f"Loading {self.dataset.item_content_abspath(idn)}")
             im = Image.open(self.dataset.item_content_abspath(idn))
-            # print(f"Original shape: {im.size}, mode: {im.mode}")
             resized_converted = coerce_to_fixed_size_rgb(im, self.image_dim)
             channels_first = np.moveaxis(np.array(resized_converted), 2, 0)
             self.loaded_images[idn] = channels_first.astype(np.float32) / 255
