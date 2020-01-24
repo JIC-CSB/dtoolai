@@ -6,7 +6,6 @@ import torch
 
 import numpy as np
 
-from imageio import imsave
 
 def evaluate_model(model, dl_eval):
 
