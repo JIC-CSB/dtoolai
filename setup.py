@@ -15,4 +15,9 @@ setup(name='dtoolai',
         'torchvision',
       ],
       packages=['dtoolai'],
+      entry_points={
+        'console_scripts': [
+          'dtoolai-provenance = dtoolai.utils:print_provenance'
+        ]
+      },
       zip_safe=False)

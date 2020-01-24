@@ -26,7 +26,7 @@ def model_from_uri(model_uri):
 @click.argument('test_ds_uri')
 def main(model_ds_uri, test_ds_uri):
 
-    tds = TensorDataSet(test_ds_uri, test=True)
+    tds = TensorDataSet(test_ds_uri)
     model = TrainedTorchModel(model_ds_uri)
 
     # model = model_from_uri(model_ds_uri)

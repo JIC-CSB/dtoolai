@@ -52,7 +52,7 @@ def train_cnn_from_tensor_dataset(tds_train, output_base_uri, output_name, param
 @click.option('--test-dataset-uri')
 def main(train_dataset_uri, output_base_uri, output_name, params, test_dataset_uri):
 
-    input_ds_train = TensorDataSet(train_dataset_uri)
+    input_ds_train = TensorDataSet(train_dataset_uri)   
 
     model_params = Parameters(
         batch_size=128,
