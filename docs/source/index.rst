@@ -3,13 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to dtoolAI's documentation!
-===================================
+dtoolAI: Reproducibility for deep learning
+==========================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   introduction
+   installation
+   application
+   training
+   retraining
+   training_from_scratch
+   extending_dtoolai
 
 
 Indices and tables

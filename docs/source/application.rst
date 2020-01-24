@@ -1,4 +1,3 @@
-
 Using a trained network model
 -----------------------------
 
@@ -8,9 +7,13 @@ information about the data on which the model was trained and how it was
 trained.
 
 Applying the network to new data
---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TO AN image
+Let's start by trying to classify a new image. Download the following image:
+
+<REF>
+
+Now run the following script:
 
 .. code-block:: console
 
@@ -18,13 +21,7 @@ TO AN image
 
     Classified joshua1.jpg as joshua_tree
 
-
-
-ALSO TO A DATASET
-
-Application to a dataset is useful for model evaluation and large scale
-classification.
-
+We've applied an existing model to a new image.
 
 Finding out about the network
 -----------------------------

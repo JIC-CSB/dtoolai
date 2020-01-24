@@ -63,7 +63,7 @@ Let's look at how
 
 
 What the code is doing
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 Let's dig into what the library code is doing. We'll work through the MNIST
 example
