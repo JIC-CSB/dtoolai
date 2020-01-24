@@ -10,6 +10,7 @@ setup(name='dtoolai',
       install_requires=[
         'dtoolcore',
         'click',
+        'pillow',
         'torch',
         'torchvision',
       ],
