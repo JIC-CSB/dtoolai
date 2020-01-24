@@ -27,6 +27,25 @@ def test_tensor_dataset_functional():
     assert tds.dim == 9
 
 
+def test_image_dataset_functional():
+
+    from dtoolai.data import ImageDataSet
+
+    ids_uri = os.path.join(TEST_SAMPLE_DATA, "example_image_dataset")
+
+    ids = ImageDataSet(ids_uri)
+    assert ids.name == "example_image_dataset"
+    assert ids.uuid == "bb27e945-b789-45d3-9b00-4808aa09ea03"
+    assert len(ids) == 6
+
+    assert ids.input_channels == 3
+    assert ids.dim == 256
+
+    im, label = ids[0]
+    assert isinstance(im, np.ndarray)
+    assert label == 2
+    
+
 def test_create_tensor_dataset_from_arrays(tmp_dir_fixture):
     pass
 
