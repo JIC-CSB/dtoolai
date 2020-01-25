@@ -1,24 +1,24 @@
-dtoolAI
-=======
+Introducing dtoolAI
+===================
 
-dtoolAI is a library to make reproducible AI model training and use easier.
+What is dtoolAI?
+----------------
 
+dtoolAI is a library to make reproducible AI model training and use easier. 
 
-* Scripts
-* Library functions
+* A python library providing classes and helper functions to make creating
+  reproducible AI models easier.
+* Example scripts and Jupyter notebooks that show how to use 
 * Guide to extending the library
 
 Higher level functions show how we can apply TECHNIQUES to image data, while
 the API and core functions
-
 
 High level (helper scripts)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The high level scripts can get you started with some standard deep learning
 tasks (training or retraining convolutional networks on image data) very fast.
-
-
 
 Medium (API functions)
 ~~~~~~~~~~~~~~~~~~~~~~

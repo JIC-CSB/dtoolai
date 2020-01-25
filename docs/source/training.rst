@@ -49,31 +49,43 @@ the trained model weights have been written, e.g.:
 Applying the trained model to test data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The simplest way to test our model is on another preprepared dataset - the 
+The simplest way to test our model is on another preprepared dataset - this
+allows us to quickly apply the model to many ready-labelled images and calculate
+its accuracy.
 
-We have test data available
-
-This will 
+We have provided the MNIST test data as a separate dtool DataSet for this
+purpose, and we can apply our new model to this dataset like this:
 
 .. code-block:: bash
 
-    $ python scripts/apply_model_to_tensor_dataset.py example/mnistcnn http://bit.ly/2NVFGQd
+    $ python scripts/apply_model_to_tensor_dataset.py \
+        example/mnistcnn http://bit.ly/2NVFGQd
     7929/10000 correct
 
-For example we can run:
+If we want to improve the model's accuracy, we could try training it for longer.
+For example, to train it for 5 epochs (loops through the training dataset)
+rather than one, we can run our script again:
 
-    python scripts/train_cnn_classifier_from_tensor_dataset.py http://bit.ly/2uqXxrk example mnistcnn --params n_epochs=5
+    python scripts/train_cnn_classifier_from_tensor_dataset.py \ 
+        http://bit.ly/2uqXxrk example mnistcnn --params n_epochs=5
 
 This will train the model for longer.
 
 Viewing the trained model metadata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's look at how 
+One of the core features of dtoolAI is capture of references to training data
+and metadata about the training process. Let's look at how we access those
+captured data for our newly trained model.
+
+dtoolai provides a helper script, ``dtoolai-provenance`` for this purpose. This
+will show a model's training metadata, the references to its training data, then
+the metadata for those training data.
 
 .. code-block:: bash
 
     $ dtoolai-provenance example/mnistcnn/
+
     Network architecture name: dtoolai.simpleScalingCNN
     Model training parameters: {'batch_size': 128,
     'init_params': {'input_channels': 1, 'input_dim': 28},
@@ -103,6 +115,6 @@ What the code is doing
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Let's dig into what the library code is doing. We'll work through the MNIST
-example
+example.
 
 

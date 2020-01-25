@@ -10,3 +10,4 @@ Collecting input files
 
 We'll use images from the `Caltech 101 objects dataset <http://www.vision.caltech.edu/Image_Datasets/Caltech101/>`_.
 
+Here, we'll need to train the model for much longer.
