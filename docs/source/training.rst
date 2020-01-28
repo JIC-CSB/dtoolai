@@ -114,7 +114,9 @@ training data, which we can follow to show its provenance.
 What the code is doing
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Let's dig into what the library code is doing. We'll work through the MNIST
-example.
+We provide the Jupyter notebook TrainingExplained.ipynb to show how the training
+script uses dtoolAI's library functions and classes to make capturing training
+metadata and parameters easier.
+
 
 
