@@ -12,7 +12,7 @@ from dtool_utils.derived_dataset import DerivedDataSet
 from dtoolai.data import ImageDataSet
 from dtoolai.utils import train, evaluate_model, evaluate_model_verbose
 from dtoolai.parameters import Parameters
-from dtoolai.models import ResNet18Retrain
+from dtoolai.models import ResNet18Pretrained
 
 
 def parse_comma_separated_param_list(raw_string):
@@ -30,7 +30,7 @@ def main(input_dataset_uri, output_base_uri, output_name, params):
     model_params = Parameters(
         batch_size=4,
         learning_rate=0.001,
-        n_epochs=5
+        n_epochs=1
     )
     if params: model_params.update_from_comma_separated_string(params)
 
@@ -39,8 +39,7 @@ def main(input_dataset_uri, output_base_uri, output_name, params):
 
     n_categories = len(ids.cat_encoding)
     model_params['init_params'] = dict(n_outputs=n_categories)
-    model = ResNet18Retrain(**model_params.init_params)
-
+    model = ResNet18Pretrained(**model_params.init_params)
 
     ids_test = ImageDataSet(input_dataset_uri, usetype='test')
     dl_test = DataLoader(ids_test, batch_size=model_params.batch_size, shuffle=True)
