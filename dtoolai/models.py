@@ -7,6 +7,7 @@ import torchvision.models
 class GenNet(nn.Module):
 
     model_name = "simpleScalingCNN"
+    categorical_output = True
     
     def __init__(self, input_channels=1, input_dim=28):
         super(GenNet, self).__init__()
@@ -29,9 +30,9 @@ class GenNet(nn.Module):
         return F.log_softmax(x, dim=1)
 
 
-class ResNet18Retrain(nn.Module):
+class ResNet18Pretrained(nn.Module):
 
-    model_name = "resnet18"
+    model_name = "resnet18pretrained"
 
     def __new__(cls, n_outputs):
         model = torchvision.models.resnet18(pretrained=True)

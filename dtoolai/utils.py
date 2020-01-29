@@ -71,6 +71,10 @@ def evaluate_model_verbose(model, dl_eval):
 
 
 def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None):
+    """
+
+    Returns: dictionary containing training history.
+    """
     
     history = defaultdict(list)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

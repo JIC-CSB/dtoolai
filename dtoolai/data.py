@@ -18,6 +18,9 @@ class WrappedDataSet(torch.utils.data.Dataset):
     def put_overlay(self, overlay_name, overlay):
         self.dataset.put_overlay(overlay_name, overlay)
 
+    def get_annotation(self, annotation_name):
+        return self.dataset.get_annotation(annotation_name)
+
     @property
     def name(self):
         return self.dataset.name
@@ -29,6 +32,30 @@ class WrappedDataSet(torch.utils.data.Dataset):
     @property
     def uuid(self):
         return self.dataset.uuid
+
+
+def scaled_float_array_to_pil_image(array):
+    """Convert an array of floats to a PIL image."""
+
+    intarray = (255 * array).astype(np.uint8)
+
+    if len(array.shape) > 3:
+        raise ValueError(f"Can't handle array of shape {array.shape}")
+
+    if len(array.shape) == 2:
+        return Image.fromarray(intarray)
+    elif len(array.shape) == 3:
+        intarray = np.transpose(intarray, (1, 2, 0))
+        channels = intarray.shape[2]
+        if channels == 1:
+            return Image.fromarray(intarray.squeeze())
+        elif channels == 3:
+            return Image.fromarray(intarray)
+        else:
+            raise ValueError(f"Can't handle image with {channels} channels")
+    else:
+        raise ValueError(f"Can't handle array with shape {array.shape}")
+
 
 
 def coerce_to_fixed_size_rgb(im, target_dim):
@@ -151,7 +178,7 @@ def create_tensor_dataset_from_arrays(
             in the created dataset.
 
     Returns:
-        None
+        URI: The URI of the created dataset
     
     """
 
@@ -167,3 +194,5 @@ def create_tensor_dataset_from_arrays(
     qds.put_annotation("dtoolAI.inputtype", "TensorDataSet")
 
     qds.put_readme(readme_content)
+
+    return qds.uri
