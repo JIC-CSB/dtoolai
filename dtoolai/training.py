@@ -30,6 +30,9 @@ def train_model_with_metadata_capture(model, ds_train, optimiser, loss_fn, param
     """
     dl_train = DataLoader(ds_train, batch_size=params.batch_size, shuffle=True)
 
+    params['input_dim'] = ds_train.dim
+    params['input_channels'] = ds_train.input_channels
+
     params['optimiser_name'] = optimiser.__class__.__name__
     params['loss_func'] = loss_fn.__class__.__name__
 
