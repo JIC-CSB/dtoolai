@@ -12,3 +12,13 @@ def test_mnist_examples():
     tds = TensorDataSet(mnist_test_uri)
     assert tds.name == "mnist.test"
     assert len(tds) == 10000
+
+
+def test_caltech_examples():
+
+    twocat_uri = "http://bit.ly/3aRvimq"
+
+    from dtoolai.data import ImageDataSet
+
+    ids = ImageDataSet(twocat_uri)
+    assert ids.name == "caltech101.hedgellamas"
