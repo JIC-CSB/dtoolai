@@ -8,7 +8,6 @@ import numpy as np
 
 from sklearn.datasets import fetch_mldata
 
-
 from dtoolai.data import create_tensor_dataset_from_arrays
 
 
@@ -30,7 +29,6 @@ def get_mnist_from_sklearn():
     return mnist
 
 
-
 def create_dataset_from_mnist_data(mnist, output_base_uri, output_prefix):
 
     output_name_train = output_prefix + '.train'
@@ -39,7 +37,7 @@ def create_dataset_from_mnist_data(mnist, output_base_uri, output_prefix):
     image_dim = [1, 28, 28]
     n_train = 60000
     
-    create_tensor_dataset_from_arrays(
+    train_uri = create_tensor_dataset_from_arrays(
         output_base_uri,
         output_name_train,
         mnist.data[:n_train],
@@ -47,8 +45,11 @@ def create_dataset_from_mnist_data(mnist, output_base_uri, output_prefix):
         image_dim,
         README_TEMPLATE.format(usetype='train')
     )
+    cat_encoding = {n: n for n in range(10)}
+    ds = dtoolcore.DataSet.from_uri(train_uri)
+    ds.put_annotation("category_encoding", cat_encoding)
 
-    create_tensor_dataset_from_arrays(
+    test_uri = create_tensor_dataset_from_arrays(
         output_base_uri,
         output_name_test,
         mnist.data[n_train:],
@@ -56,6 +57,8 @@ def create_dataset_from_mnist_data(mnist, output_base_uri, output_prefix):
         image_dim,
         README_TEMPLATE.format(usetype='test')
     )
+    ds = dtoolcore.DataSet.from_uri(test_uri)
+    ds.put_annotation("category_encoding", cat_encoding)
 
 
 @click.command()
