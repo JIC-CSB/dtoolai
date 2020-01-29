@@ -7,7 +7,8 @@ from dtoolai.utils import train
 
 
 def train_model_with_metadata_capture(model, ds_train, optimiser, loss_fn, params, output_ds, ds_valid=None):
-    """Train a
+    """Train a Pytorch model from a dtoolAI dataset, capturing training data
+    metadata and training parameters during the process.
 
     Args:
         model (torch.nn): A Pytorch model to be trained.

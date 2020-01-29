@@ -33,11 +33,13 @@ class GenNet(nn.Module):
 class ResNet18Pretrained(nn.Module):
 
     model_name = "resnet18pretrained"
+    categorical_output = True
 
     def __new__(cls, n_outputs):
         model = torchvision.models.resnet18(pretrained=True)
         num_ftrs = model.fc.in_features
         model.fc = nn.Linear(num_ftrs, n_outputs)
         model.model_name = cls.model_name
+        model.categorical_output = cls.categorical_output
 
         return model

@@ -34,7 +34,7 @@ def coerce_to_target_dim(im, input_format):
         im = im.convert(mode_map[ch])
 
     return im
-    
+
 
 @click.command()
 @click.argument('model_uri')
@@ -68,32 +68,7 @@ def evaluate_model(model, dl_eval):
             pred = Y_pred.argmax(dim=1, keepdim=True)
             correct += pred.eq(label.view_as(pred)).sum().item()
 
-        print(f"{correct}/{n_labels}")
-
-
-def evaluate_model_verbose(model, dl_eval):
-
-    model.eval()
-    correct = 0
-    n_labels = 0
-    with torch.no_grad():
-        for data, label in dl_eval:
-
-            model_input = data
-            print(model_input)
-            model_input_np = model_input.squeeze().cpu().numpy()
-            model_input_t = np.transpose(model_input_np, (1, 2, 0))
-            imsave('scratch/model_input_t.png', model_input_t)
-
-            print(model_input.shape, model_input.min(), model_input.max(), model_input.dtype)
-            n_labels += len(label)
-            Y_pred = model(data)
-            print(Y_pred)
-            pred = Y_pred.argmax(dim=1, keepdim=True)
-            print(pred, label)
-            correct += pred.eq(label.view_as(pred)).sum().item()
-
-        print(f"{correct}/{n_labels}")
+    return correct
 
 
 def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None):
