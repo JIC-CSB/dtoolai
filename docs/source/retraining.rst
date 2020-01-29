@@ -49,7 +49,12 @@ Retraining the model
 Now we can run the retraining process. 
 
 * The input dataset
-* 
+* Where we want to save the output dataset
+
+.. code-block:: bash
+
+    $ python scripts/retrain_model_from_dataset.py scratch/datasets/caltech.u2 scratch u2ex
+
 
 Applying the retrained model to new images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
