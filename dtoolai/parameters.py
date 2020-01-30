@@ -1,12 +1,11 @@
-
 import json
 
 class Parameters(object):
+    """Class holding key/value parameter data."""
 
     def __init__(self, **kwargs):
         self.parameter_dict = dict(kwargs)
         self.param_types = {k: type(v) for k, v in kwargs.items()}
-
 
     @classmethod
     def from_dict(cls, input_dict):

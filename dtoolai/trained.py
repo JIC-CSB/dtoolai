@@ -1,7 +1,10 @@
 import torch
 import dtoolcore
 
+from torchvision.transforms.functional import to_tensor
+
 import dtoolai.models
+from dtoolai.imageutils import coerce_to_target_dim
 
 
 MODEL_NAME_LOOKUP = {
@@ -30,6 +33,18 @@ class WrappedDataSet(object):
     @property
     def uuid(self):
         return self.dataset.uuid
+
+    def get_readme_content(self):
+        return self.dataset.get_readme_content()
+
+
+def image_to_model_input(im, input_format):
+    im = Image.open(image_fpath)
+    # print(f"Original shape: {im.size}, mode: {im.mode}")
+    resized_converted = coerce_to_target_dim(im, input_format)
+    as_tensor = to_tensor(resized_converted)
+    # Add leading extra dimension for batch size
+    return as_tensor[None]
 
 
 class TrainedTorchModel(WrappedDataSet):
@@ -60,6 +75,15 @@ class TrainedTorchModel(WrappedDataSet):
     def from_uri(cls, uri):
         torchmodel = cls(uri)
         return torchmodel
+
+    def convert_and_predict(self, im):
+        dim = self.model_params['input_dim']
+        channels = self.model_params['input_channels']
+        input_format = [channels, dim, dim]
+        resized_converted = coerce_to_target_dim(im, input_format)
+        as_tensor = to_tensor(resized_converted)
+
+        return self.predict(as_tensor[None])
 
     def predict(self, model_input):
 

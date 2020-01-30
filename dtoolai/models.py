@@ -5,11 +5,20 @@ import torchvision.models
 
 
 class GenNet(nn.Module):
+    """Simple image classification model.
+
+    Args:
+        input_channels (int): Number of channels in input images.
+        input_dim (dim): Dimension of each input image, images are therefore
+            required to be dim x dim.
+        n_outputs (int): Number of possible classes for images.
+
+    """
 
     model_name = "simpleScalingCNN"
     categorical_output = True
     
-    def __init__(self, input_channels=1, input_dim=28):
+    def __init__(self, input_channels=1, input_dim=28, n_outputs=10):
         super(GenNet, self).__init__()
         self.conv1 = nn.Conv2d(input_channels, 6, 5)
         dim = (input_dim - (5 - 1)) // 2
@@ -17,7 +26,7 @@ class GenNet(nn.Module):
         dim = (dim - (5 - 1)) // 2
         self.fcdim = dim
         self.fc1 = nn.Linear(self.fcdim*self.fcdim*16, 84)
-        self.fc2 = nn.Linear(84, 10)
+        self.fc2 = nn.Linear(84, n_outputs)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
@@ -31,6 +40,12 @@ class GenNet(nn.Module):
 
 
 class ResNet18Pretrained(nn.Module):
+    """Pretrained ResNet18 model.
+
+    Args:
+        n_outputs (int): Number of possible classes for images.
+
+    """
 
     model_name = "resnet18pretrained"
     categorical_output = True

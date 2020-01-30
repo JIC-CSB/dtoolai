@@ -11,6 +11,12 @@ from dtool_utils.quick_dataset import QuickDataSet
 
 
 class WrappedDataSet(torch.utils.data.Dataset):
+    """Subclass of pytorch Dataset that provides dtool DataSet methods.
+
+    Args:
+
+        uri: URI for enclosed dtool DataSet.
+    """
 
     def __init__(self, uri):
         self.dataset = dtoolcore.DataSet.from_uri(uri)
@@ -35,7 +41,13 @@ class WrappedDataSet(torch.utils.data.Dataset):
 
 
 def scaled_float_array_to_pil_image(array):
-    """Convert an array of floats to a PIL image."""
+    """Convert an array of floats to a PIL image.
+    
+    Args:
+        array (np.ndarray): Array representing an image. Expected to be float
+            and normalised between 0 and 1.
+    
+    """
 
     intarray = (255 * array).astype(np.uint8)
 
@@ -73,6 +85,8 @@ def coerce_to_fixed_size_rgb(im, target_dim):
 
 
 class ImageDataSet(WrappedDataSet):
+    """Class allowing a collection of images annotated with categories to be
+    used as both a Pytorch Dataset and a dtool DataSet."""
     
     def __init__(self, uri, usetype='train'):
         super().__init__(uri)
