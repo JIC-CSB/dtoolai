@@ -17,7 +17,8 @@ setup(name='dtoolai',
       packages=['dtoolai'],
       entry_points={
         'console_scripts': [
-          'dtoolai-provenance = dtoolai.utils:print_provenance'
+          'dtoolai-provenance = dtoolai.utils:print_provenance',
+          'create-image-dataset-from-dirtree = dtoolai.utils:image_dataset_from_dirtree'
         ]
       },
       zip_safe=False)

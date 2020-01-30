@@ -1,13 +1,55 @@
+import os
 import time
 import pprint
 from collections import defaultdict
+from pathlib import Path
 
 import click
 import torch
 import dtoolcore
 import numpy as np
 
+from dtool_utils.quick_dataset import QuickDataSet
+
 from dtoolai.trained import TrainedTorchModel
+
+
+IMAGEDS_README_TEMPLATE = """---
+Created from directory: {dirpath}
+Created by: dtoolAI.utils:image_dataset_from_dirtree
+"""
+
+
+@click.command()
+@click.argument('dirtree_dirpath')
+@click.argument('output_base_uri')
+@click.argument('output_name')
+def image_dataset_from_dirtree(dirtree_dirpath, output_base_uri, output_name):
+
+    categories = [d for d in os.listdir(dirtree_dirpath)]
+
+    def relpath_from_srcpath(srcpath, cat):
+        return cat + '/' + os.path.basename(srcpath)
+
+    items_to_include = {}
+    for cat in categories:
+        srcpath_iter = (Path(dirtree_dirpath) / cat).iterdir()
+        items_to_include.update({
+            srcpath: (relpath_from_srcpath(srcpath, cat), cat)
+            for srcpath in srcpath_iter
+        })
+
+    category_encoding = {c: n for n, c in enumerate(categories)}
+    with QuickDataSet(output_base_uri, output_name) as output_ds:
+        for srcpath, (relpath, cat) in items_to_include.items():
+            handle = output_ds.put_item(srcpath, relpath)
+            output_ds.add_item_metadata(handle, 'category', cat)
+        output_ds.put_annotation('category_encoding', category_encoding)
+        output_ds.put_annotation("dtoolAI.inputtype", "ImageDataSet")
+        abs_dirpath = os.path.abspath(dirtree_dirpath)
+        output_ds.put_readme(IMAGEDS_README_TEMPLATE.format(dirpath=abs_dirpath))
+
+    return output_ds.uri
 
 
 def coerce_to_target_dim(im, input_format):
