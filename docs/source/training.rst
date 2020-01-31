@@ -66,7 +66,9 @@ If we want to improve the model's accuracy, we could try training it for longer.
 For example, to train it for 5 epochs (loops through the training dataset)
 rather than one, we can run our script again:
 
-    python scripts/train_cnn_classifier_from_tensor_dataset.py \ 
+.. code-block:: bash
+
+    $ python scripts/train_cnn_classifier_from_tensor_dataset.py \ 
         http://bit.ly/2uqXxrk example mnistcnn --params n_epochs=5
 
 This will train the model for longer.

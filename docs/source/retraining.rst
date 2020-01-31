@@ -34,11 +34,15 @@ installed, you can view information about this hosted dataset like this:
     categories. IEEE Trans. Pattern Recognition and Machine Intelligence.
     origin: http://www.vision.caltech.edu/Image_Datasets/Caltech101/
 
+This version of the CalTech data contains just two object classes - llamas and
+hedgehogs. We'll train a network to be able to distinguish these.
+
 Retraining the model
 ~~~~~~~~~~~~~~~~~~~~
 
-Now we can run the retraining process. dtoolAI provides a helper script to
-apply its library functions for retraining a model and capturing metadata. 
+Since we have data available, we can immediately run the retraining process.
+dtoolAI provides a helper script to apply its library functions for retraining a
+model and capturing metadata:
 
 .. code-block:: bash
 
@@ -67,6 +71,10 @@ takes advantage of this labelling to score the model:
     23/25 correct
 
 Now we can test the newly trained model. Try downloading this image:
+
+https://en.wikipedia.org/wiki/File:Igel.JPG
+
+Then we can apply our trained model
 
 .. code-block:: bash
 
@@ -109,7 +117,4 @@ category it represents, e.g.:
     └── category3
         ├── image1.jpg
         └── image2.jpg
-
-
-Choose two. In this example, we're going to use hedgehogs and llamas.
 
