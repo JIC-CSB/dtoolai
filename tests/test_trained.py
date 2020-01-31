@@ -21,5 +21,5 @@ def test_trained_model():
     im = Image.open(image_fpath)
 
     prediction = model.convert_and_predict(im)
-    assert prediction == 8
+    assert prediction == '8'
     

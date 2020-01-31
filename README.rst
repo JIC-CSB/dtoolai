@@ -6,9 +6,24 @@ dtoolAI is a library for supporting reproducible deep learning.
 Installation
 ------------
 
-dtoolAI can be installed
+dtoolAI can be installed through pip:
 
-You can also 
+.. code-block:: bash
+
+    pip install dtoolai
+
+You can also download this repository and install through:
+
+.. code-block:: bash
+
+    python setup.py install
+
+dtoolAI requires Pytorch - installing this under Windows can be trickier, see
+the `Pytorch getting started guide https://pytorch.org/get-started/locally/`_
+for details.
+
+Documentation
+-------------
 
 Tests
 -----

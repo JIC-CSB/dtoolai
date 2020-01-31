@@ -9,6 +9,7 @@ setup(name='dtoolai',
       license='MIT',
       install_requires=[
         'dtoolcore',
+        'dtool-http',
         'click',
         'pillow',
         'torch',
@@ -18,7 +19,7 @@ setup(name='dtoolai',
       entry_points={
         'console_scripts': [
           'dtoolai-provenance = dtoolai.utils:print_provenance',
-          'create-image-dataset-from-dirtree = dtoolai.utils:image_dataset_from_dirtree'
+          'create-image-dataset-from-dirtree = dtoolai.utils:image_dataset_from_dirtree_cli'
         ]
       },
       zip_safe=False)
