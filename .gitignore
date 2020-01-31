@@ -10,3 +10,5 @@ example
 *.jpg
 
 build
+
+tests/data/torch

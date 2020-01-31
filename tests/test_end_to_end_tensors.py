@@ -1,11 +1,13 @@
 import os
 
+import dtoolcore
 import pytest
 import numpy as np
 import torch
 import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+import torchvision
 
 from . import tmp_dir_fixture
 from . import TEST_SAMPLE_DATA
@@ -14,13 +16,22 @@ from . import TEST_SAMPLE_DATA
 @pytest.mark.slow
 def test_end_to_end_tensors_with_mnist(tmp_dir_fixture):
 
-    mnist_train_numpy_dirname = "mnist_train_numpy"
-    data_fpath = os.path.join(TEST_SAMPLE_DATA, mnist_train_numpy_dirname, "data.npy")
-    labels_fpath = os.path.join(TEST_SAMPLE_DATA, mnist_train_numpy_dirname, "labels.npy")
+    data_cache_dirpath = os.path.join(TEST_SAMPLE_DATA, "torch")
+    mnist_torch = torchvision.datasets.MNIST(data_cache_dirpath, download=True)
+    data = mnist_torch.data.numpy().reshape(60000, -1)
+    labels = mnist_torch.targets
+    # mnist_numpy_uri = os.path.join(TEST_SAMPLE_DATA, "mnist.numpy")
+    # mnist_ds = dtoolcore.DataSet.from_uri(mnist_numpy_uri)
+    # data_dtoolcore.utils.generate_identifier("data.npy")
+    # data_fpath = mnist_ds.item_content_abspath
 
-    data = np.load(data_fpath)
+    # mnist_train_numpy_dirname = "mnist_train_numpy"
+    # data_fpath = os.path.join(TEST_SAMPLE_DATA, mnist_train_numpy_dirname, "data.npy")
+    # labels_fpath = os.path.join(TEST_SAMPLE_DATA, mnist_train_numpy_dirname, "labels.npy")
+
+    # data = np.load(data_fpath)
     assert data.shape == (60000, 784)
-    labels = np.load(labels_fpath)
+    # labels = np.load(labels_fpath)
     assert labels.shape == (60000,)
 
     from dtoolai.data import create_tensor_dataset_from_arrays
