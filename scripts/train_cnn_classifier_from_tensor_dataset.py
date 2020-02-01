@@ -6,7 +6,6 @@ import torch
 from torch.utils.data import DataLoader
 import torch.optim as optim
 
-# from dtool_utils.derived_dataset import DerivedDataSet
 from dtoolcore import DerivedDataSetCreator
 
 from dtoolai.data import TensorDataSet
