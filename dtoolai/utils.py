@@ -20,10 +20,6 @@ Created by: dtoolAI.utils:image_dataset_from_dirtree
 """
 
 
-@click.command()
-@click.argument('dirtree_dirpath')
-@click.argument('output_base_uri')
-@click.argument('output_name')
 def image_dataset_from_dirtree(dirtree_dirpath, output_base_uri, output_name):
 
     categories = [d for d in os.listdir(dirtree_dirpath)]
@@ -40,18 +36,28 @@ def image_dataset_from_dirtree(dirtree_dirpath, output_base_uri, output_name):
         })
 
     category_encoding = {c: n for n, c in enumerate(categories)}
-    with QuickDataSet(output_base_uri, output_name) as output_ds:
+
+    abs_dirpath = os.path.abspath(dirtree_dirpath)
+    readme_content = IMAGEDS_README_TEMPLATE.format(dirpath=abs_dirpath)
+    with dtoolcore.DataSetCreator(output_name, output_base_uri, readme_content=readme_content) as output_ds:
         for srcpath, (relpath, cat) in items_to_include.items():
             handle = output_ds.put_item(srcpath, relpath)
             output_ds.add_item_metadata(handle, 'category', cat)
-        output_ds.put_annotation('category_encoding', category_encoding)
-        output_ds.put_annotation("dtoolAI.inputtype", "ImageDataSet")
-        abs_dirpath = os.path.abspath(dirtree_dirpath)
-        output_ds.put_readme(IMAGEDS_README_TEMPLATE.format(dirpath=abs_dirpath))
-
-    print(f"Created image dataset at {output_ds.uri}")
+        output_ds.proto_dataset.put_annotation('category_encoding', category_encoding)
+        output_ds.proto_dataset.put_annotation("dtoolAI.inputtype", "ImageDataSet")
 
     return output_ds.uri
+
+
+@click.command()
+@click.argument('dirtree_dirpath')
+@click.argument('output_base_uri')
+@click.argument('output_name')
+def image_dataset_from_dirtree_cli(dirtree_dirpath, output_base_uri, output_name):
+
+    uri = image_dataset_from_dirtree(dirtree_dirpath, output_base_uri, output_name)
+    click.secho(f"Created image dataset at {output_ds.uri}")
+
 
 
 @click.command()
@@ -132,3 +138,24 @@ def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None):
             # evaluate_model(model, dl_eval)
 
     return history
+
+
+def nested_dict_as_string(d, indent=0):
+    s = ""
+    for k, v in d.items():
+        s += f"{' '*indent}{k}:"
+        if isinstance(v, dict):
+            s += "\n" + nested_dict_as_string(v, indent=indent+2)
+        else:
+            s += f" {v}\n"
+    return s
+
+
+def readme_dict_from_source_dataset(source_ds):
+    readme_dict = {
+        "source_dataset_name": source_ds.name,
+        "source_dataset_uri": source_ds.uri,
+        "source_dataset_uuid": source_ds.uuid
+    }
+
+    return readme_dict

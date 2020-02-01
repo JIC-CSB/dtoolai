@@ -6,7 +6,8 @@ import torch
 from torch.utils.data import DataLoader
 import torch.optim as optim
 
-from dtool_utils.derived_dataset import DerivedDataSet
+# from dtool_utils.derived_dataset import DerivedDataSet
+from dtoolcore import DerivedDataSetCreator
 
 from dtoolai.data import TensorDataSet
 from dtoolai.models import GenNet
@@ -23,7 +24,7 @@ def train_cnn_from_tensor_dataset(tds_train, output_base_uri, output_name, param
     loss_fn = torch.nn.NLLLoss()
     optimiser = optim.SGD(model.parameters(), lr=params.learning_rate)
 
-    with DerivedDataSet(output_base_uri, output_name, tds_train, overwrite=True) as output_ds:
+    with DerivedDataSetCreator(output_name, output_base_uri, tds_train) as output_ds:
         train_model_with_metadata_capture(model, tds_train, optimiser, loss_fn, params, output_ds)
 
     print(f"Wrote trained model ({model.model_name}) weights to {output_ds.uri}")

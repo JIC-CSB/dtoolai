@@ -3,7 +3,11 @@ import json
 import torch
 from torch.utils.data import DataLoader
 
-from dtoolai.utils import train
+from dtoolai.utils import (
+    train,
+    nested_dict_as_string,
+    readme_dict_from_source_dataset
+)
 
 
 def train_model_with_metadata_capture(model, ds_train, optimiser, loss_fn, params, output_ds, ds_valid=None):
@@ -32,17 +36,14 @@ def train_model_with_metadata_capture(model, ds_train, optimiser, loss_fn, param
 
     params['input_dim'] = ds_train.dim
     params['input_channels'] = ds_train.input_channels
-
     params['optimiser_name'] = optimiser.__class__.__name__
     params['loss_func'] = loss_fn.__class__.__name__
 
     history = train(model, dl_train, optimiser, loss_fn, params.n_epochs)
 
-    output_ds.readme_dict['parameters'] = params.parameter_dict
-    output_ds.readme_dict['model_name'] = model.model_name
-    model_output_fpath = output_ds.staging_fpath('model.pt')
+    model_output_fpath = output_ds.prepare_staging_abspath_promise('model.pt')
     torch.save(model.state_dict(), model_output_fpath)
-    history_output_fpath = output_ds.staging_fpath('history.json')
+    history_output_fpath = output_ds.prepare_staging_abspath_promise('history.json')
     with open(history_output_fpath, 'w') as fh:
         json.dump(history, fh)
 
@@ -56,3 +57,10 @@ def train_model_with_metadata_capture(model, ds_train, optimiser, loss_fn, param
     if has_categorical_output:
         cat_encoding = ds_train.get_annotation("category_encoding")
         output_ds.put_annotation("category_encoding", cat_encoding)
+
+    readme_dict = readme_dict_from_source_dataset(ds_train)
+    readme_dict['parameters'] = params.parameter_dict
+    readme_dict['model_name'] = model.model_name
+    
+    dict_repr = nested_dict_as_string(readme_dict)
+    output_ds.put_readme(dict_repr)
