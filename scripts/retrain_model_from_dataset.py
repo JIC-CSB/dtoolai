@@ -2,7 +2,7 @@ import click
 
 import torch
 
-from dtool_utils.derived_dataset import DerivedDataSet
+from dtoolcore import DerivedDataSetCreator
 
 from dtoolai.data import ImageDataSet
 from dtoolai.parameters import Parameters
@@ -18,7 +18,7 @@ def train_cnn_from_image_dataset(ids_train, output_base_uri, output_name, params
     loss_fn = torch.nn.CrossEntropyLoss()
     optimiser = torch.optim.SGD(model.parameters(), lr=params.learning_rate)
     
-    with DerivedDataSet(output_base_uri, output_name, ids_train, overwrite=True) as output_ds:
+    with DerivedDataSetCreator(output_name, output_base_uri, ids_train) as output_ds:
         train_model_with_metadata_capture(model, ids_train, optimiser, loss_fn, params, output_ds)
 
     print(f"Wrote trained model ({model.model_name}) weights to {output_ds.uri}")

@@ -9,8 +9,6 @@ import torch
 import dtoolcore
 import numpy as np
 
-from dtool_utils.quick_dataset import QuickDataSet
-
 from dtoolai.trained import TrainedTorchModel
 
 

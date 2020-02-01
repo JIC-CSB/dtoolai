@@ -7,8 +7,6 @@ import numpy as np
 
 from PIL import Image
 
-from dtool_utils.quick_dataset import QuickDataSet
-
 
 class WrappedDataSet(torch.utils.data.Dataset):
     """Subclass of pytorch Dataset that provides dtool DataSet methods.
@@ -196,10 +194,10 @@ def create_tensor_dataset_from_arrays(
     
     """
 
-    with QuickDataSet(output_base_uri, output_name) as qds:
-        data_fpath = qds.staging_fpath('data.npy')
+    with dtoolcore.DataSetCreator(output_name, output_base_uri) as qds:
+        data_fpath = qds.prepare_staging_abspath_promise('data.npy')
         np.save(data_fpath, data_array)
-        labels_fpath = qds.staging_fpath('labels.npy')
+        labels_fpath = qds.prepare_staging_abspath_promise('labels.npy')
         np.save(labels_fpath, label_array)
 
     data_idn = dtoolcore.utils.generate_identifier('data.npy')
