@@ -15,7 +15,6 @@ dtoolAI: Reproducibility for deep learning
    application
    training
    retraining
-   training_from_scratch
    extending_dtoolai
 
 
