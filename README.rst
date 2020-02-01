@@ -1,12 +1,16 @@
 dtoolAI - reproducible deep learning
 ====================================
 
+.. image:: https://badge.fury.io/py/dtoolai.svg
+   :target: https://badge.fury.io/py/dtoolai
+   :alt: PyPi package
+
 dtoolAI is a library for supporting reproducible deep learning.
 
 Installation
 ------------
 
-dtoolAI can be installed through pip:
+dtoolAI requires Python version 3. It can be installed through pip:
 
 .. code-block:: bash
 
@@ -19,11 +23,16 @@ You can also download this repository and install through:
     python setup.py install
 
 dtoolAI requires Pytorch - installing this under Windows can be trickier, see
-the `Pytorch getting started guide https://pytorch.org/get-started/locally/`_
+the `Pytorch getting started guide <https://pytorch.org/get-started/locally/>`_
 for details.
 
 Documentation
 -------------
+
+Primary documentation: https://dtoolai.readthedocs.io/en/latest/
+
+Detailed examples of API use are provided in the notebooks/ directory in this
+repository.
 
 Tests
 -----

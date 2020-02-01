@@ -1,9 +1,13 @@
 from setuptools import setup
 
+readme = open('README.rst').read()
+
 setup(name='dtoolai',
-      version='0.1',
-      description='dtool AI utils',
-      url='http://github.com',
+      version='0.1.1',
+      description='Reproducible Deep Learning tools and examples',
+      long_description=readme,
+      long_description_content_type='text/x-rst',
+      url='http://github.com/JIC-CSB/dtoolai',
       author='Matthew Hartley',
       author_email='Matthew.Hartley@jic.ac.uk',
       license='MIT',
