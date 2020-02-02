@@ -20,6 +20,6 @@ def test_image_dataset_from_dirtree(tmp_dir_fixture):
     ids = ImageDataSet(uri)
 
     assert len(ids) == 6
-    assert set(ids.cat_encoding.keys()) == set(['beaver', 'dalmation', 'panda'])
+    assert set(ids.cat_encoding.keys()) == set(['car', 'mug', 'chair'])
 
 
