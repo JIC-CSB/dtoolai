@@ -17,9 +17,9 @@ def test_trained_model():
 
     assert "mnist" in model.get_readme_content()
 
-    image_fpath = os.path.join(TEST_SAMPLE_DATA, "non_mnist_8.png")
+    image_fpath = os.path.join(TEST_SAMPLE_DATA, "non_mnist_three.png")
     im = Image.open(image_fpath)
 
     prediction = model.convert_and_predict(im)
-    assert prediction == '8'
+    assert prediction == '3'
     
