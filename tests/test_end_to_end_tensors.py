@@ -62,11 +62,11 @@ def test_end_to_end_tensors_with_mnist(tmp_dir_fixture):
     optimiser = optim.SGD(model.parameters(), lr=0.01)
 
     from dtoolai.utils import train
-    train(model, dl, optimiser, loss_fn, 2)
+    train(model, dl, optimiser, loss_fn, 3)
 
     # FIXME - should be hosted or something
     model.eval()
-    tds_test = TensorDataSet("scratch/datasets/mnist.test")
+    tds_test = TensorDataSet("http://bit.ly/2NVFGQd")
     dl_test = DataLoader(tds_test, batch_size=128)
     assert len(tds_test) == 10000
     correct = 0
