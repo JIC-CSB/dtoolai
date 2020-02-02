@@ -54,7 +54,7 @@ def image_dataset_from_dirtree(dirtree_dirpath, output_base_uri, output_name):
 def image_dataset_from_dirtree_cli(dirtree_dirpath, output_base_uri, output_name):
 
     uri = image_dataset_from_dirtree(dirtree_dirpath, output_base_uri, output_name)
-    click.secho(f"Created image dataset at {output_ds.uri}")
+    click.secho(f"Created image dataset at {uri}")
 
 
 
