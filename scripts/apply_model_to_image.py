@@ -5,7 +5,7 @@ from PIL import Image
 
 from torchvision.transforms.functional import to_tensor
 
-from dtoolai.utils import coerce_to_target_dim
+from dtoolai.imageutils import coerce_to_target_dim
 from dtoolai.trained import TrainedTorchModel
 
 
@@ -16,12 +16,6 @@ def image_fpath_to_model_input(image_fpath, input_format):
     as_tensor = to_tensor(resized_converted)
     # Add leading extra dimension for batch size
     return as_tensor[None]
-
-
-# def diagnose_input(model_input):
-#     model_input_np = model_input.squeeze().cpu().numpy()
-#     model_input_t = np.transpose(model_input_np, (1, 2, 0))
-#     imsave('model_input_t.png', model_input_t)
 
 
 @click.command()
