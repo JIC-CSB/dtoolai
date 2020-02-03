@@ -16,6 +16,7 @@ dtoolAI: Reproducibility for deep learning
    training
    retraining
    extending_dtoolai
+   api
 
 
 Indices and tables
