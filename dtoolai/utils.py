@@ -19,6 +19,18 @@ Created by: dtoolAI.utils:image_dataset_from_dirtree
 
 
 def image_dataset_from_dirtree(dirtree_dirpath, output_base_uri, output_name):
+    """Creates an ImageDataSet based on a root path containing directories of
+    images. Each named directory is assumed to name a category of images.
+
+    Args:
+        dirtree_dirpath: Path a the root of a directory tree containing named
+            subdirectories.
+        output_base_uri: Base URI at which DataSet will be created.
+        output_name: Name of created DataSet.
+    
+    Returns:
+        URI of created ImageDataSet.
+    """
 
     categories = [d for d in os.listdir(dirtree_dirpath)]
 
@@ -61,6 +73,12 @@ def image_dataset_from_dirtree_cli(dirtree_dirpath, output_base_uri, output_name
 @click.command()
 @click.argument('model_uri')
 def print_provenance(model_uri):
+    """Displays the provenance of a trained model. 
+
+    Reads properties from the model, displays training parameters and tries
+    to read the metadata for the dataset used to train the model.
+    """
+
     ttm = TrainedTorchModel(model_uri)
 
     print(f"Network architecture name: {ttm.model_name}")

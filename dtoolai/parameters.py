@@ -1,7 +1,11 @@
 import json
 
 class Parameters(object):
-    """Class holding key/value parameter data."""
+    """Class holding key/value parameter data.
+    
+    This class is designed to make working with a mixture of JSON, string and
+    object data easier.
+    """
 
     def __init__(self, **kwargs):
         self.parameter_dict = dict(kwargs)

@@ -11,6 +11,9 @@ from PIL import Image
 class WrappedDataSet(torch.utils.data.Dataset):
     """Subclass of pytorch Dataset that provides dtool DataSet methods.
 
+    This class mostly provides methods that consumers of DataSets require, and
+    passes those methods onto its internal DataSet object.
+
     Args:
 
         uri: URI for enclosed dtool DataSet.
@@ -42,9 +45,13 @@ def scaled_float_array_to_pil_image(array):
     """Convert an array of floats to a PIL image.
     
     Args:
+    
         array (np.ndarray): Array representing an image. Expected to be float
             and normalised between 0 and 1.
-    
+
+    Returns:
+
+        A PIL Image object created from the array
     """
 
     intarray = (255 * array).astype(np.uint8)
