@@ -24,7 +24,7 @@ of the dtoolAI repository on the image, e.g.:
 We've applied an existing model to a new image.
 
 Finding out about the network
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We can also find out about the network and how it was trained. For this, we'll
 use the command ``dtoolai-provenance`` that's provided when you install the
