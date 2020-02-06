@@ -1,4 +1,6 @@
+import os
 import logging
+import pathlib
 
 import torch.utils.data
 import dtoolcore
@@ -17,7 +19,12 @@ class WrappedDataSet(torch.utils.data.Dataset):
     """
 
     def __init__(self, uri):
-        self.dataset = dtoolcore.DataSet.from_uri(uri)
+        if os.path.isdir(uri):
+            ds_uri = pathlib.Path(uri).as_uri()
+        else:
+            ds_uri = uri
+
+        self.dataset = dtoolcore.DataSet.from_uri(ds_uri)
 
     def put_overlay(self, overlay_name, overlay):
         self.dataset.put_overlay(overlay_name, overlay)
@@ -193,6 +200,9 @@ def create_tensor_dataset_from_arrays(
         URI: The URI of the created dataset
     
     """
+
+    if os.path.isdir(output_base_uri):
+        output_base_uri = pathlib.Path(output_base_uri).as_uri()
 
     with dtoolcore.DataSetCreator(output_name, output_base_uri) as qds:
         data_fpath = qds.prepare_staging_abspath_promise('data.npy')

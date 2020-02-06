@@ -64,14 +64,16 @@ def test_end_to_end_tensors_with_mnist(tmp_dir_fixture):
     from dtoolai.utils import train
     train(model, dl, optimiser, loss_fn, 3)
 
-    # FIXME - should be hosted or something
     model.eval()
     tds_test = TensorDataSet("http://bit.ly/2NVFGQd")
     dl_test = DataLoader(tds_test, batch_size=128)
     assert len(tds_test) == 10000
     correct = 0
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     with torch.no_grad():
         for data, label in dl_test:
+            data = data.to(device)
+            label = label.to(device)
             Y_pred = model(data)
             pred = Y_pred.argmax(dim=1, keepdim=True)
             correct += pred.eq(label.view_as(pred)).sum().item()

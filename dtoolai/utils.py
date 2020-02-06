@@ -20,6 +20,9 @@ Created by: dtoolAI.utils:image_dataset_from_dirtree
 
 def image_dataset_from_dirtree(dirtree_dirpath, output_base_uri, output_name):
 
+    if os.path.isdir(output_base_uri):
+        output_base_uri = Path(output_base_uri).as_uri()
+
     categories = [d for d in os.listdir(dirtree_dirpath)]
 
     def relpath_from_srcpath(srcpath, cat):
@@ -102,6 +105,8 @@ def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None):
     history = defaultdict(list)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
+
+    print(f"Using device {device}")
 
     for epoch in range(n_epochs):
         epoch_loss = 0
