@@ -1,6 +1,7 @@
 import os
 import time
 import pprint
+import logging
 from collections import defaultdict
 from pathlib import Path
 
@@ -111,19 +112,54 @@ def evaluate_model(model, dl_eval):
     return correct
 
 
-def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None):
+class BaseCallBack(object):
+
+    def on_batch_end(self, batch, epoch, model, history):
+        pass
+
+    def on_epoch_start(self, epoch, model, history):
+        pass
+
+    def on_epoch_end(self, epoch, model, history):
+        pass
+
+class EpochSummary(BaseCallBack):
+
+    def on_epoch_start(self, epoch, model, history):
+        self.t_start = time.time()
+
+    def on_epoch_end(self, epoch, model, history):
+        epoch_time = time.time() - self.t_start
+        epoch_loss = history['epoch_loss'][-1]
+        print(f"Epoch {epoch}, training loss {epoch_loss:.2f}, time {epoch_time:.2f}s")
+
+
+# class BatchSummary(BaseCallBack):
+
+#     def on_batch_end(self, batch, epoch, model, history):
+#         if batch % 10 == 0:
+#             print(
+#                 f"  Epoch {epoch}, batch {batch}/{len(dl)}, running loss {epoch_loss}")
+
+
+def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None, callbacks=[]):
     """
 
     Returns: dictionary containing training history.
     """
     
+    callbacks.insert(0, EpochSummary())
+
+    logging.info(f"Training for {n_epochs} epochs with {len(callbacks)} callbacks")
     history = defaultdict(list)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
     for epoch in range(n_epochs):
+        for callback in callbacks:
+            callback.on_epoch_start(epoch, model, history)
+
         epoch_loss = 0
-        t_start = time.time()
         model.train()
         for n, (data, label) in enumerate(dl):
             data = data.to(device)
@@ -136,11 +172,8 @@ def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None):
             epoch_loss += loss.item()
 
             optimiser.step()
-
-            if n % 10 == 0:
-                print(f"  Epoch {epoch}, batch {n}/{len(dl)}, running loss {epoch_loss}")
         history["epoch_loss"].append(epoch_loss)
-        print(f"Epoch {epoch}, training loss {epoch_loss}, time {time.time()-t_start}")
+
         if dl_eval:
             model.eval()
             valid_loss = 0
@@ -152,6 +185,9 @@ def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None):
             print(f"Validation loss {valid_loss}")
             history["valid_loss"].append(valid_loss)
             # evaluate_model(model, dl_eval)
+
+        for callback in callbacks:
+            callback.on_epoch_end(epoch, model, history)
 
     return history
 

@@ -10,7 +10,7 @@ from dtoolai.utils import (
 )
 
 
-def train_model_with_metadata_capture(model, ds_train, optimiser, loss_fn, params, output_ds, ds_valid=None):
+def train_model_with_metadata_capture(model, ds_train, optimiser, loss_fn, params, output_ds, ds_valid=None, callbacks=[]):
     """Train a Pytorch model from a dtoolAI dataset, capturing training data
     metadata and training parameters during the process.
 
@@ -39,7 +39,9 @@ def train_model_with_metadata_capture(model, ds_train, optimiser, loss_fn, param
     params['optimiser_name'] = optimiser.__class__.__name__
     params['loss_func'] = loss_fn.__class__.__name__
 
-    history = train(model, dl_train, optimiser, loss_fn, params.n_epochs)
+    history = train(
+        model, dl_train, optimiser, loss_fn, params.n_epochs, callbacks=callbacks
+    )
 
     model_output_fpath = output_ds.prepare_staging_abspath_promise('model.pt')
     torch.save(model.state_dict(), model_output_fpath)
