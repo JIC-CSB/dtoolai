@@ -14,6 +14,12 @@ The scripts for this tutorial can be found in `https://github.com/JIC-CSB/dtoola
 .. code-block:: console
 
     $ git clone https://github.com/JIC-CSB/dtoolai.git
+    
+The examples in this documentation assumes that you are working from within the ``scripts`` directory in this repository. The command below updates the working directory to this location.
+
+.. code-block:: console
+
+    $ cd scripts
 
 Applying the network to new data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
