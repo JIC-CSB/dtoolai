@@ -24,7 +24,7 @@ The examples in this documentation assumes that you are working from within the 
 Applying the network to new data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's start by trying to classify a new image. Download the following image:
+Let's start by trying to classify a new image. The image below is available in ``./docs/source/non_mnist_three.png``.
 
 .. image:: non_mnist_three.png
 
@@ -33,7 +33,7 @@ of the dtoolAI repository on the image, e.g.:
 
 .. code-block:: console
 
-    $ python scripts/apply_model_to_image.py http://bit.ly/2tbPzSB ~/Downloads/three.png
+    $ python scripts/apply_model_to_image.py http://bit.ly/2tbPzSB ./docs/source/non_mnist_three.png
     Classified /Users/hartleym/Downloads/three.png as 3
 
 We've applied an existing model to a new image.
