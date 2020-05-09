@@ -6,6 +6,15 @@ that's new to the network. We'll then look at how dtoolAI allows us to find out
 information about the data on which the model was trained and how it was
 trained.
 
+Download the scripts needed for this tutorial
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The scripts for this tutorial can be found in `https://github.com/JIC-CSB/dtoolai <https://github.com/JIC-CSB/dtoolai`_. The easiest way to get access to them is to clone the git repository.
+
+.. code-block:: console
+
+    git clone https://github.com/JIC-CSB/dtoolai.git
+
 Applying the network to new data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
