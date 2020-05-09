@@ -13,7 +13,7 @@ The scripts for this tutorial can be found in `https://github.com/JIC-CSB/dtoola
 
 .. code-block:: console
 
-    git clone https://github.com/JIC-CSB/dtoolai.git
+    $ git clone https://github.com/JIC-CSB/dtoolai.git
 
 Applying the network to new data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
