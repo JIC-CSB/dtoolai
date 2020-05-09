@@ -24,7 +24,7 @@ You can also download this repository and install through:
 
 dtoolAI requires Pytorch - installing this under Windows can be trickier, see
 the `Pytorch getting started guide <https://pytorch.org/get-started/locally/>`_
-for details. You may find this install easier with conda, e.g.:
+for details. You may find this install easier with `conda <https://docs.conda.io>`_, e.g.:
 
 .. code-block:: bash
 
