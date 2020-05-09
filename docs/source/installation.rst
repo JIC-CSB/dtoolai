@@ -13,13 +13,11 @@ You can install dtoolAI via the pip package manager:
 
     pip install dtoolai
 
-To understand the examples, it's also useful to install the dtool command line
-client. This makes it easier to see what metadata are being written when we use
-dtoolAI:
+To understand the examples, it's also useful to install the `dtool meta package <https://dtool.readthedocs.io/>`_. This makes it easier to work with datasets created by dtoolAI:
 
 .. code-block:: bash
 
-    pip install dtool-cli
+    pip install dtool
 
 Running the example notebooks in the code repository also requires Jupyter:
 
