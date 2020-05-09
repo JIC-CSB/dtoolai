@@ -1,6 +1,12 @@
 Installation
 ------------
 
+dtoolAI requires Python version 3 and Pytorch.
+
+.. warning:: Install Pytorch before installing dtoolAI. For information on how to install Pytorch this see the
+             `Pytorch getting started guide <https://pytorch.org/get-started/locally/>`_
+             for details.
+
 You can install dtoolAI via the pip package manager:
 
 .. code-block:: bash
