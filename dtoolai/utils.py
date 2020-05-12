@@ -87,7 +87,7 @@ def print_provenance(model_uri):
 
     print(f"Model training parameters: {pprint.pformat(model_parameters)}")
 
-    source_ds_uri = ttm.dataset.get_annotation("source_ds_uri")
+    source_ds_uri = ttm.dataset.get_annotation("source_dataset_uri")
     print(f"Source dataset URI: {source_ds_uri}")
 
     source_ds = dtoolcore.DataSet.from_uri(source_ds_uri)
