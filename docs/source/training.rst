@@ -40,11 +40,13 @@ Later, we'll look at what the script is doing.
     python scripts/train_cnn_classifier_from_tensor_dataset.py http://bit.ly/2uqXxrk example mnistcnn
 
 This will produce information about the training process, and then report where
-the trained model weights have been written, e.g.:
+the dataset with the trained model weights have been written, e.g.:
 
 .. code-block:: bash
 
     Wrote trained model (simpleScalingCNN) weights to file://N108176/Users/hartleym/projects/ai/dtoolai-p/example/mnistcnn
+    
+On disk it is possible to refer to a dataset using a relative path. As such the URI above can be simplified to ``./example/mnistcnn``.
 
 Applying the trained model to test data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,7 +61,7 @@ purpose, and we can apply our new model to this dataset like this:
 .. code-block:: bash
 
     $ python scripts/apply_model_to_tensor_dataset.py \
-        example/mnistcnn http://bit.ly/2NVFGQd
+        ./example/mnistcnn http://bit.ly/2NVFGQd
     7929/10000 correct
 
 If we want to improve the model's accuracy, we could try training it for longer.
