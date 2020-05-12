@@ -71,7 +71,7 @@ rather than one, we can run our script again:
 .. code-block:: bash
 
     $ python scripts/train_cnn_classifier_from_tensor_dataset.py \ 
-        http://bit.ly/2uqXxrk example mnistcnn --params n_epochs=5
+        http://bit.ly/2uqXxrk example mnistcnn_epochs_5 --params n_epochs=5
 
 This will train the model for longer.
 
