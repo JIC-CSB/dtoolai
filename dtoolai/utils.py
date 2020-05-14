@@ -99,10 +99,16 @@ def print_provenance(model_uri):
 def evaluate_model(model, dl_eval):
 
     model.eval()
+
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+
     correct = 0
     n_labels = 0
     with torch.no_grad():
         for data, label in dl_eval:
+            data = data.to(device)
+            label = label.to(device)
             n_labels += len(label)
             Y_pred = model(data)
             pred = Y_pred.argmax(dim=1, keepdim=True)
