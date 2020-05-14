@@ -120,7 +120,9 @@ What the code is doing
 
 We provide the Jupyter notebook TrainingExplained.ipynb to show how the training
 script uses dtoolAI's library functions and classes to make capturing training
-metadata and parameters easier.
+metadata and parameters easier. This notebook's available
+`here <https://github.com/JIC-CSB/dtoolai/blob/master/notebooks/TrainingExplained.ipynb>`_,
+or if you have a local copy of the dtoolAI repository, in the ``notebooks`` directory.
 
 
 
