@@ -4,10 +4,10 @@ scratch
 local-data
 example
 
-*.ipynb
 *.egg-info/
 *.png
 *.jpg
+.ipynb_checkpoints
 
 build
 dist
