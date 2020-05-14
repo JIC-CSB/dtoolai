@@ -118,3 +118,38 @@ category it represents, e.g.:
         ├── image1.jpg
         └── image2.jpg
 
+We can then use  helper script provided by dtoolAI, ``create-image-dataset-from-dirtree`` to
+turn this directoy into a training dataset.
+
+Assuming that the images are in a directory called ``new_training_example``, and that the
+directory ``example`` exists and that we can write to this directory, we run:
+
+.. code-block:: bash
+
+    create-image-dataset-from-dirtree new_training_example example retraining.input.dataset
+
+or, under Windows:
+
+    create-image-dataset-from-dirtree.exe
+
+This will create a new dataset and report its created URI:
+
+.. code-block:: bash
+
+    Created image dataset at file:///C:/Users/myuser/projects/dtoolai/example/retraining.input.dataset
+
+In this example, we're creating the dataset on local disk, so we would need to copy it to persistent
+world accessible storage (such as Amazon S3 or Azure storage) when we publish a DL model based on this
+dataset. If you have S3 or Azure credentials set up, you can create persistent datasets directly using
+the script described above, changing the ``example`` directory to a base URI as described in the
+`dtool documentation <https://dtool.readthedocs.io>`_.
+
+Retraining on the new dataset
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now that we've created our training dataset, we can run the same training script that we used above
+on our new dataset, e.g.:
+
+.. code-block:: bash
+
+    python scripts/retrain_model_from_dataset.py file:///C:/Users/myuser/projects/dtoolai/example/retraining.input.dataset example new.model 
