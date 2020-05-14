@@ -12,8 +12,8 @@ def test_image_dataset_from_dirtree(tmp_dir_fixture):
 
     uri = image_dataset_from_dirtree(dirtree_dirpath, tmp_dir_fixture, "imageds")
 
-    assert uri.startswith("file://")
-    assert uri.endswith(os.path.join(tmp_dir_fixture, "imageds"))
+    assert str(uri).startswith("file://")
+    assert str(uri).endswith("imageds")
 
     from dtoolai.data import ImageDataSet
 
