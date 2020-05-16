@@ -45,8 +45,30 @@ the dataset with the trained model weights have been written, e.g.:
 .. code-block:: bash
 
     Wrote trained model (simpleScalingCNN) weights to file://N108176/Users/hartleym/projects/ai/dtoolai-p/example/mnistcnn
-    
-On disk it is possible to refer to a dataset using a relative path. As such the URI above can be simplified to ``./example/mnistcnn``.
+
+dtoolAI and URIs
+~~~~~~~~~~~~~~~~
+
+In the example above, when we specified where the trained model should be
+written, we provided two parameters to the script with values ``example`` and
+``mnistcnn``. The second of these, ``mnistcnn`` gives the name of the output
+model, the first ``example`` is a **base URI**. This concept is explained in
+more detail in the `dtool documentation
+<https://dtool.readthedocs.io/en/latest/working_with_datasets.html>`_, we'll
+give a short summary here.
+
+In general when we create model training datasets and trained models, we want to
+store these in permanant HTTP accessible object storage with persistent URIs.
+However, since this requires setting up Amazon S3 or Microsoft Azure storage
+credentials, for simplicity we'll work with filesystem URIs in these examples.
+URIs on filesystem disk are something of a special case. Properly qualified file
+URIs have a form like the example above:
+
+file://N108176/Users/hartleym/projects/ai/dtoolai-p/example/mnistcnn
+
+For convenience's sake, we allow file URIs to be expressed as filesystem paths.
+As such the URI above can be simplified to ``./example/mnistcnn``, and dtool
+will internally convert this into a full URI.
 
 Applying the trained model to test data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
