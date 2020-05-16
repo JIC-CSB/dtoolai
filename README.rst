@@ -7,6 +7,20 @@ dtoolAI - reproducible deep learning
 
 dtoolAI is a library for supporting reproducible deep learning.
 
+
+Quick start
+-----------
+
+If you'd like to see what dtoolAI can do without installing anything, two of the
+Jupyter notebooks in this repository highlighting dtoolAI functions can be run
+through Google Colab without any local software installation:
+
+* `Training a character recognition network <https://colab.research.google.com/drive/1vqKmQFK2utX8Bn0LQ_6lx_xB56r3nnUA?usp=sharing>`_
+* `Retraining a network on new data <https://colab.research.google.com/drive/1vYS90QH7pW-9PLGXD9CKNXtqiTT6o3O1?usp=sharing>`_
+
+You'll need a Google account to run these, and when you load the notebooks,
+click "Open in playground" to be able to execute code.
+
 Installation
 ------------
 
