@@ -10,6 +10,9 @@ dtoolAI is a library for supporting reproducible deep learning.
 Installation
 ------------
 
+Through ``pip``
+~~~~~~~~~~~~~~~
+
 dtoolAI requires Python version 3 and Pytorch.
 
 .. warning:: Install Pytorch before installing dtoolAI. For information on how to install Pytorch this see the
@@ -22,12 +25,32 @@ Once Pytorch has been installed dtoolAI can be installed through pip:
 
     pip install dtoolai
 
+Through ``conda``
+~~~~~~~~~~~~~~~~~
+
+You can also install dtoolAI through conda. To optionally create a conda environment in which to install
+dtoolAI:
+
+.. code-block:: bash
+
+    conda create -n dtoolai
+    conda activate dtoolai
+
+Then you can install with:
+
+.. code-block:: bash
+
+    conda install pytorch==1.4.0 torchvision==0.5.0 -c pytorch
+    conda install dtoolcore dtool-http dtoolai -c dtool
+
+With ``setup.py``
+~~~~~~~~~~~~~~~~~
+
 You can also download this repository and install through:
 
 .. code-block:: bash
 
     python setup.py install
-
 
 Documentation
 -------------
