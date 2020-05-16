@@ -5,7 +5,10 @@ dtoolAI requires Python version 3 and Pytorch.
 
 .. warning:: Install Pytorch before installing dtoolAI. For information on how to install Pytorch this see the
              `Pytorch getting started guide <https://pytorch.org/get-started/locally/>`_
-             for details.
+             for details. Version 1.4.0 of Pytorch and 0.5.0 of torchvision are definitely compatible with dtoolAI.
+
+Installing with ``pip``
+~~~~~~~~~~~~~~~~~~~~~~~
 
 You can install dtoolAI via the pip package manager:
 
@@ -31,3 +34,15 @@ pytest.
 .. code-block:: bash
     
     pip install pytest
+
+Installing with ``conda``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can install dtoolAI with conda as follows:
+
+.. code-block:: bash
+
+    conda install pytorch==1.4.0 torchvision==0.5.0 -c pytorch
+    conda install dtoolcore dtool-http dtoolai -c dtool 
+
+This first installs a version of Pytorch known to work with dtoolAI.
