@@ -9,7 +9,7 @@ trained.
 Download the scripts needed for this tutorial
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The scripts for this tutorial can be found in `https://github.com/JIC-CSB/dtoolai <https://github.com/JIC-CSB/dtoolai`_. The easiest way to get access to them is to clone the git repository.
+The scripts for this tutorial can be found in `https://github.com/JIC-CSB/dtoolai <https://github.com/JIC-CSB/dtoolai>`_. The easiest way to get access to them is to clone the git repository.
 
 .. code-block:: console
 
