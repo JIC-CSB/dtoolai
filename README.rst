@@ -5,6 +5,9 @@ dtoolAI - reproducible deep learning
    :target: https://badge.fury.io/py/dtoolai
    :alt: PyPi package
 
+.. image:: https://anaconda.org/dtool/dtoolai/badges/version.svg
+   :target: https://anaconda.org/dtool/dtoolai
+
 dtoolAI is a library for supporting reproducible deep learning.
 
 
