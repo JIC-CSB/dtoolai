@@ -24,7 +24,23 @@ click "Open in playground" to be able to execute code.
 Installation
 ------------
 
-For Windows users, we recommend installing pytorch and torchvision, two of dtoolAI's dependencies through
+Dependencies
+~~~~~~~~~~~~
+
+dtoolAI is dependent on the following Python packages:
+
+* pytorch
+* torchvision
+* dtoolcore
+* dtool-http
+* click
+* pillow
+
+If you install dtoolAI with ``pip`` or ``conda`` as described below, these
+dependencies will be installed automatically. If you wish to install manually,
+you'll need to install these before installing dtoolAI.
+
+For Windows users, we recommend installing pytorch and torchvision through
 anaconda/conda. See the section below for details.
 
 Through ``pip``
