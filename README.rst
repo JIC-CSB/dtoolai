@@ -24,6 +24,9 @@ click "Open in playground" to be able to execute code.
 Installation
 ------------
 
+For Windows users, we recommend installing pytorch and torchvision, two of dtoolAI's dependencies through
+anaconda/conda. See the section below for details.
+
 Through ``pip``
 ~~~~~~~~~~~~~~~
 
@@ -57,6 +60,12 @@ Then you can install with:
     conda install pytorch==1.4.0 torchvision==0.5.0 -c pytorch
     conda install dtoolcore dtool-http dtoolai -c dtool
 
+To install the dtool command line utilities, you'll need to use pip:
+
+.. code-block:: bash
+    
+    pip install dtool
+    
 With ``setup.py``
 ~~~~~~~~~~~~~~~~~
 
