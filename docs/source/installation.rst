@@ -38,7 +38,7 @@ pytest.
     pip install pytest
 
 Installing with ``conda``
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can install dtoolAI with conda as follows:
 
