@@ -36,6 +36,24 @@ def train_cnn_from_tensor_dataset(tds_train, output_base_uri, output_name, param
 @click.option('--params')
 @click.option('--test-dataset-uri')
 def main(train_dataset_uri, output_base_uri, output_name, params, test_dataset_uri):
+    """Train a classifier from a tensor DataSet.
+
+    \b
+    Required arguments:
+    train_dataset_uri: The URI of the data that will be used to train the model.
+    output_base_uri:   The base URI at which the output model DataSet will be created.
+                       Local file URIS (file:///path/to/file) can be specified as absolute
+                       or relative filesystem paths, which will be converted to full URIs.
+    output_name:       The name for the output DataSet.  
+
+    \b
+    Optional arguments:
+    params:            A comma separated list of parameters that will override defaults for
+                       training the model.
+    test_dataset_uri   A URI with a test DataSet that will be used to evaluate the model.
+                       during and after training. As for output_base_uri, filesyste, paths
+                       can be used and will be converted to file URIS.  
+    """
 
     input_ds_train = TensorDataSet(train_dataset_uri)   
 

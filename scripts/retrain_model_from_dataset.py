@@ -30,6 +30,21 @@ def train_cnn_from_image_dataset(ids_train, output_base_uri, output_name, params
 @click.argument('output_name')
 @click.option('--params')
 def main(input_dataset_uri, output_base_uri, output_name, params):
+    """Train a classifier from a tensor DataSet.
+
+    \b
+    Required arguments:
+    input_dataset_uri: The URI of the data that will be used to train the model.
+    output_base_uri:   The base URI at which the output model DataSet will be created.
+                       Local file URIS (file:///path/to/file) can be specified as absolute
+                       or relative filesystem paths, which will be converted to full URIs.
+    output_name:       The name for the output DataSet.  
+
+    \b
+    Optional arguments:
+    params:            A comma separated list of parameters that will override defaults for
+                       training the model.
+    """
 
     input_ds_train = ImageDataSet(input_dataset_uri)
 
