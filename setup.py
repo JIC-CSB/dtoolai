@@ -3,7 +3,7 @@ from setuptools import setup
 readme = open('README.rst').read()
 
 setup(name='dtoolai',
-      version='0.1.1',
+      version='0.2.0',
       description='Reproducible Deep Learning tools and examples',
       long_description=readme,
       long_description_content_type='text/x-rst',
