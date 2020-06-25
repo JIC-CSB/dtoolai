@@ -114,7 +114,7 @@ def evaluate_model(model, dl_eval):
 
 class BaseCallBack(object):
 
-    def on_batch_end(self, batch, epoch, model, history):
+    def on_batch_end(self, batch, epoch, trainer):
         pass
 
     def on_epoch_start(self, epoch, model, history):
@@ -134,12 +134,65 @@ class EpochSummary(BaseCallBack):
         print(f"Epoch {epoch}, training loss {epoch_loss:.2f}, time {epoch_time:.2f}s")
 
 
-# class BatchSummary(BaseCallBack):
+class BatchSummary(BaseCallBack):
 
-#     def on_batch_end(self, batch, epoch, model, history):
-#         if batch % 10 == 0:
-#             print(
-#                 f"  Epoch {epoch}, batch {batch}/{len(dl)}, running loss {epoch_loss}")
+    def on_batch_end(self, batch, epoch, trainer):
+
+        report_on_n = max(len(trainer.dl)//10, 1)
+        if batch % report_on_n == 0:
+            print(
+                f"  Epoch {epoch}, batch {batch}/{len(trainer.dl)}, running loss {trainer.epoch_loss:.2f}"
+            )
+
+
+class Trainer(object):
+
+    def __init__(self, model, dl, optimiser, loss_fn, callbacks):
+        self.model = model
+        self.dl = dl
+        self.optimiser = optimiser
+        self.loss_fn = loss_fn
+        self.callbacks = callbacks
+
+    def run_batch(self, batch, epoch, data, label):
+        data = data.to(self.device)
+        label = label.to(self.device)
+
+        self.optimiser.zero_grad()
+
+        Y_pred = self.model(data)
+        loss = self.loss_fn(Y_pred, label)
+        loss.backward()
+        self.epoch_loss += loss.item()
+
+        self.optimiser.step()
+
+        for callback in self.callbacks:
+            callback.on_batch_end(batch, epoch, self)
+
+    def run_epoch(self, epoch):
+        self.epoch_loss = 0
+        self.model.train()
+
+        for callback in self.callbacks:
+            callback.on_epoch_start(epoch, self.loss_fn, self.callbacks)
+
+        for n, (data, label) in enumerate(self.dl):
+            self.run_batch(n, epoch, data, label)
+
+        self.history["epoch_loss"].append(self.epoch_loss)
+
+        for callback in self.callbacks:
+            callback.on_epoch_end(epoch, self.model, self.history)
+
+    def train(self, n_epochs):
+
+        self.history = defaultdict(list)
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
+
+        for epoch in range(n_epochs):
+            self.run_epoch(epoch)
 
 
 def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None, callbacks=[]):
@@ -149,47 +202,48 @@ def train(model, dl, optimiser, loss_fn, n_epochs, dl_eval=None, callbacks=[]):
     """
     
     callbacks.insert(0, EpochSummary())
+    callbacks.insert(0, BatchSummary())
 
     logging.info(f"Training for {n_epochs} epochs with {len(callbacks)} callbacks")
-    history = defaultdict(list)
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model.to(device)
 
-    for epoch in range(n_epochs):
-        for callback in callbacks:
-            callback.on_epoch_start(epoch, model, history)
+    trainer = Trainer(model, dl, optimiser, loss_fn, callbacks)
+    trainer.train(n_epochs)
 
-        epoch_loss = 0
-        model.train()
-        for n, (data, label) in enumerate(dl):
-            data = data.to(device)
-            label = label.to(device)
-            optimiser.zero_grad()
-            Y_pred = model(data)
+    # for epoch in range(n_epochs):
+    #     for callback in callbacks:
+    #         callback.on_epoch_start(epoch, model, history)
 
-            loss = loss_fn(Y_pred, label)
-            loss.backward()
-            epoch_loss += loss.item()
+    #     epoch_loss = 0
+    #     model.train()
+    #     for n, (data, label) in enumerate(dl):
+    #         data = data.to(device)
+    #         label = label.to(device)
+    #         optimiser.zero_grad()
+    #         Y_pred = model(data)
 
-            optimiser.step()
-        history["epoch_loss"].append(epoch_loss)
+    #         loss = loss_fn(Y_pred, label)
+    #         loss.backward()
+    #         epoch_loss += loss.item()
 
-        if dl_eval:
-            model.eval()
-            valid_loss = 0
-            for n, (data, label) in enumerate(dl):
-                data = data.to(device)
-                label = label.to(device)
-                Y_pred = model(data)
-                valid_loss += loss_fn(Y_pred, label).item()
-            print(f"Validation loss {valid_loss}")
-            history["valid_loss"].append(valid_loss)
-            # evaluate_model(model, dl_eval)
+    #         optimiser.step()
+    #     history["epoch_loss"].append(epoch_loss)
 
-        for callback in callbacks:
-            callback.on_epoch_end(epoch, model, history)
+    #     if dl_eval:
+    #         model.eval()
+    #         valid_loss = 0
+    #         for n, (data, label) in enumerate(dl):
+    #             data = data.to(device)
+    #             label = label.to(device)
+    #             Y_pred = model(data)
+    #             valid_loss += loss_fn(Y_pred, label).item()
+    #         print(f"Validation loss {valid_loss}")
+    #         history["valid_loss"].append(valid_loss)
+    #         # evaluate_model(model, dl_eval)
 
-    return history
+    #     for callback in callbacks:
+    #         callback.on_epoch_end(epoch, model, history)
+
+    return trainer.history
 
 
 def nested_dict_as_string(d, indent=0):
